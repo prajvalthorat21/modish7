@@ -1,0 +1,834 @@
+/* ==============================================================================
+   MODISH7 — SALON PARTNER PORTAL STYLES (LOGIN, REGISTER & DASHBOARD)
+   Consistent with Warm Ivory, Cobalt Blue, Electric Lime & Editorial Typography
+   ============================================================================== */
+
+:root {
+  --portal-bg: #FAF7F2;
+  --portal-card-bg: #FFFFFF;
+  --portal-surface: #F5F0E8;
+  --portal-border: rgba(23, 24, 26, 0.08);
+  --portal-border-strong: rgba(23, 24, 26, 0.16);
+  --portal-charcoal: #17181A;
+  --portal-charcoal-muted: #666A73;
+  --portal-cobalt: #0047AB;
+  --portal-cobalt-hover: #003380;
+  --portal-lime: #E8FF65;
+  --portal-lime-hover: #D7F34D;
+  --portal-radius: 4px;
+}
+
+body.portal-body {
+  background-color: var(--portal-bg);
+  color: var(--portal-charcoal);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------------------------
+   PORTAL HEADER
+   ------------------------------------------------------------------------------ */
+.portal-header {
+  background-color: var(--portal-bg);
+  border-bottom: 1px solid var(--portal-border);
+  height: 80px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.portal-header-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 2.5rem);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.portal-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: var(--portal-charcoal);
+}
+
+.portal-brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 3px;
+}
+
+.portal-brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.portal-brand-tag {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--portal-cobalt);
+  display: block;
+  margin-top: 2px;
+}
+
+.portal-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.portal-nav-link {
+  font-size: 0.825rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--portal-charcoal);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.portal-nav-link:hover {
+  color: var(--portal-cobalt);
+}
+
+.portal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background-color: #E6F0FA;
+  color: var(--portal-cobalt);
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
+/* ------------------------------------------------------------------------------
+   AUTH PAGES (LOGIN & REGISTER)
+   ------------------------------------------------------------------------------ */
+.auth-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 4rem) 1rem;
+}
+
+.auth-card {
+  background-color: var(--portal-card-bg);
+  border: 1px solid var(--portal-border);
+  border-radius: 4px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 520px;
+  padding: clamp(2rem, 4vw, 3rem);
+}
+
+.auth-card-wide {
+  max-width: 680px;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--portal-cobalt);
+  margin-bottom: 0.5rem;
+}
+
+.auth-title {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 500;
+  color: var(--portal-charcoal);
+  margin-bottom: 0.5rem;
+  line-height: 1.15;
+}
+
+.auth-subtitle {
+  font-size: 0.9rem;
+  color: var(--portal-charcoal-muted);
+  line-height: 1.5;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .auth-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.auth-label {
+  font-size: 0.775rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--portal-charcoal);
+}
+
+.auth-input,
+.auth-textarea,
+.auth-select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--portal-charcoal);
+  background-color: var(--portal-surface);
+  border: 1px solid var(--portal-border);
+  border-radius: 3px;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.auth-input:focus,
+.auth-textarea:focus,
+.auth-select:focus {
+  background-color: #FFFFFF;
+  border-color: var(--portal-cobalt);
+  box-shadow: 0 0 0 3px rgba(0, 71, 171, 0.12);
+}
+
+.auth-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.825rem;
+  color: var(--portal-charcoal-muted);
+  line-height: 1.45;
+}
+
+.auth-checkbox-row input {
+  margin-top: 3px;
+  accent-color: var(--portal-cobalt);
+}
+
+.auth-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background-color: var(--portal-cobalt);
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.auth-btn-primary:hover {
+  background-color: var(--portal-cobalt-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 71, 171, 0.25);
+}
+
+.auth-btn-lime {
+  background-color: var(--portal-lime);
+  color: var(--portal-charcoal);
+  border: 1px solid rgba(21, 21, 21, 0.15);
+}
+
+.auth-btn-lime:hover {
+  background-color: var(--portal-lime-hover);
+  color: var(--portal-charcoal);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--portal-border);
+  font-size: 0.85rem;
+  color: var(--portal-charcoal-muted);
+}
+
+.auth-footer a {
+  color: var(--portal-cobalt);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.auth-alert {
+  padding: 0.85rem 1rem;
+  border-radius: 3px;
+  font-size: 0.825rem;
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+}
+
+.auth-alert-error {
+  background-color: #FDF2F2;
+  border: 1px solid #F8B4B4;
+  color: #9B1C1C;
+}
+
+.auth-alert-success {
+  background-color: #EDFDF5;
+  border: 1px solid #BCF0DA;
+  color: #03543F;
+}
+
+/* Password Toggle Controls */
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-input-wrap .auth-input {
+  padding-right: 2.75rem;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  color: var(--portal-charcoal-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+}
+
+.password-toggle-btn:hover {
+  color: var(--portal-charcoal);
+}
+
+.password-toggle-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Remember Me & Forgot Password Row */
+.remember-forgot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.825rem;
+  margin-top: -0.25rem;
+}
+
+.remember-checkbox-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--portal-charcoal-muted);
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.825rem;
+}
+
+.remember-checkbox-wrap input {
+  accent-color: var(--portal-cobalt);
+  cursor: pointer;
+}
+
+.forgot-link {
+  color: var(--portal-cobalt);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: color 0.15s ease;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+  color: var(--portal-cobalt-hover);
+}
+
+/* Social & Google Sign-In */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.25rem 0;
+  color: var(--portal-charcoal-muted);
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--portal-border);
+}
+
+.auth-divider span {
+  padding: 0 0.85rem;
+}
+
+.auth-btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  background-color: #FFFFFF;
+  color: #3c4043;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid #dadce0;
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.08);
+  box-sizing: border-box;
+}
+
+.auth-btn-google:hover {
+  background-color: #f8fafd;
+  border-color: #c2c7d0;
+  box-shadow: 0 2px 6px rgba(60, 64, 67, 0.15);
+  transform: translateY(-1px);
+  color: #202124;
+}
+
+.auth-btn-google svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------------------
+   DASHBOARD / ACCOUNT PORTAL
+   ------------------------------------------------------------------------------ */
+.dashboard-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard-banner {
+  background-color: var(--portal-card-bg);
+  border: 1px solid var(--portal-border);
+  border-radius: 4px;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.dashboard-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.dashboard-headline {
+  font-family: var(--font-serif);
+  font-size: 2.15rem;
+  font-weight: 500;
+  color: var(--portal-charcoal);
+  line-height: 1.15;
+}
+
+.dashboard-subhead {
+  font-size: 0.9rem;
+  color: var(--portal-charcoal-muted);
+}
+
+.dashboard-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Stats Ribbon */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  background-color: var(--portal-card-bg);
+  border: 1px solid var(--portal-border);
+  border-radius: 4px;
+  padding: 1.35rem;
+}
+
+.stat-label {
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--portal-charcoal-muted);
+  margin-bottom: 0.4rem;
+}
+
+.stat-value {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: var(--portal-charcoal);
+  line-height: 1;
+}
+
+/* Tabs */
+.dashboard-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--portal-border);
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+  overflow-x: auto;
+}
+
+.dashboard-tab {
+  background: none;
+  border: none;
+  padding: 0.95rem 0.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--portal-charcoal-muted);
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.dashboard-tab:hover {
+  color: var(--portal-charcoal);
+}
+
+.dashboard-tab.is-active {
+  color: var(--portal-cobalt);
+}
+
+.dashboard-tab.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--portal-cobalt);
+}
+
+.dashboard-view {
+  display: none;
+}
+
+.dashboard-view.is-active {
+  display: block;
+}
+
+/* Products in Dashboard */
+.portal-products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .portal-products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portal-product-card {
+  background-color: var(--portal-card-bg);
+  border: 1px solid var(--portal-border);
+  border-radius: 4px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.portal-product-img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  background-color: var(--portal-surface);
+  border-radius: 3px;
+  flex-shrink: 0;
+  padding: 0.5rem;
+}
+
+.portal-product-info {
+  flex: 1;
+}
+
+.portal-product-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.portal-product-cat {
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--portal-cobalt);
+  margin-bottom: 0.5rem;
+}
+
+.portal-product-pricing {
+  font-size: 0.85rem;
+  color: var(--portal-charcoal-muted);
+}
+
+.portal-product-pricing strong {
+  color: var(--portal-charcoal);
+  font-size: 1rem;
+}
+
+.portal-product-qty {
+  width: 75px;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1px solid var(--portal-border-strong);
+  border-radius: 3px;
+  background: var(--portal-surface);
+}
+
+/* Orders Table */
+.portal-table-wrap {
+  background-color: var(--portal-card-bg);
+  border: 1px solid var(--portal-border);
+  border-radius: 4px;
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+.portal-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+.portal-table th {
+  background-color: var(--portal-surface);
+  padding: 1rem 1.25rem;
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--portal-charcoal-muted);
+  border-bottom: 1px solid var(--portal-border);
+}
+
+.portal-table td {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--portal-border);
+  color: var(--portal-charcoal);
+}
+
+.portal-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 3px;
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.status-approved {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+}
+
+.status-paid {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+/* Modal */
+.portal-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.portal-modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.portal-modal-card {
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  max-width: 650px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.portal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--portal-border);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.portal-modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 500;
+}
+
+.portal-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--portal-charcoal-muted);
+}
+
+/* Printable Invoice */
+.invoice-container {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  padding: 2.5rem;
+  font-size: 0.875rem;
+}
+
+.invoice-header-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--portal-charcoal);
+  padding-bottom: 1.5rem;
+}
+
+.invoice-party-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.invoice-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+.invoice-items-table th,
+.invoice-items-table td {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.invoice-totals {
+  margin-left: auto;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1rem;
+}

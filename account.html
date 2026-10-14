@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salon Partner Dashboard — Modish7 Professional Haircare</title>
+  <meta name="description" content="Modish7 Salon Partner Portal. Access commercial backbar orders, approved quotations, payment transactions, and GST tax invoices.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- Google Fonts: Editorial Serif + Clean Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/src/styles/main.css">
+  <link rel="stylesheet" href="/src/styles/portal.css">
+  <!-- Optional Razorpay Checkout SDK (used when live keys are configured) -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+</head>
+<body class="portal-body">
+
+  <!-- Portal Header -->
+  <header class="portal-header">
+    <div class="portal-header-container">
+      <a href="/" class="portal-brand" aria-label="Modish7 Home">
+        <img src="/favicon.png" alt="Modish7 Emblem" class="portal-brand-mark">
+        <div>
+          <div class="portal-brand-name">Modish7</div>
+          <span class="portal-brand-tag">Salon Exclusive Partner Portal</span>
+        </div>
+      </a>
+
+      <div class="portal-header-nav">
+        <span class="portal-badge" id="partnerBadge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+          Verified Salon Partner
+        </span>
+        <a href="/" class="portal-nav-link">Storefront</a>
+        <button class="btn btn-secondary btn-sm" id="logoutBtn" style="font-size: 0.75rem; padding: 0.5rem 1rem;">
+          LOGOUT
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard Main Container -->
+  <main class="dashboard-container">
+    
+    <!-- Welcome Banner -->
+    <div class="dashboard-banner">
+      <div class="dashboard-title-wrap">
+        <h1 class="dashboard-headline" id="dashSalonName">Loading Salon...</h1>
+        <div class="dashboard-subhead">
+          Director: <strong id="dashContactName">—</strong> · Location: <strong id="dashSalonCity">—</strong> · Direct Commercial Supply
+        </div>
+      </div>
+      <div class="dashboard-actions">
+        <button class="btn btn-primary btn-sm auth-btn-lime" onclick="document.querySelector('[data-view=\'catalogue\']')?.click()">
+          REQUEST SALON ORDER
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Order Requests</div>
+        <div class="stat-value" id="statTotalOrders">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Under Commercial Review</div>
+        <div class="stat-value" id="statPendingOrders">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Quotations Approved</div>
+        <div class="stat-value" id="statApprovedOrders">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Completed &amp; Invoiced</div>
+        <div class="stat-value" id="statPaidOrders">0</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="dashboard-tabs" aria-label="Portal Navigation Tabs">
+      <button class="dashboard-tab is-active" data-view="orders">Orders &amp; Quotations</button>
+      <button class="dashboard-tab" data-view="catalogue">Request Salon Supply (Catalogue)</button>
+      <button class="dashboard-tab" data-view="profile">Customer Profile</button>
+      <button class="dashboard-tab" data-view="security">Security &amp; Password</button>
+    </nav>
+
+    <!-- TAB 1: ORDERS & QUOTATIONS -->
+    <section class="dashboard-view is-active" id="view-orders" aria-label="Orders and Quotations">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500;">Salon Order Enquiries &amp; Quotations</h2>
+        <span style="font-size: 0.8rem; color: var(--portal-charcoal-muted);">Real-time status synchronized with commercial desk</span>
+      </div>
+      <div id="ordersListContainer">
+        <!-- Rendered by account.js -->
+        <div style="text-align: center; padding: 3rem; color: var(--portal-charcoal-muted);">Loading salon orders...</div>
+      </div>
+    </section>
+
+    <!-- TAB 2: REQUEST SALON SUPPLY (CATALOGUE) -->
+    <section class="dashboard-view" id="view-catalogue" aria-label="Product Catalogue and Order Request">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500; margin-bottom: 0.35rem;">Professional Salon Order Request</h2>
+        <p style="font-size: 0.875rem; color: var(--portal-charcoal-muted); line-height: 1.5;">
+          Select required backbar and salon retail quantities. Prices shown represent official public store reference rates. Formal commercial volumes and approved payable amounts are finalized upon submission.
+        </p>
+      </div>
+
+      <div id="orderAlert" class="auth-alert" style="display: none;"></div>
+
+      <form id="createOrderForm">
+        <!-- 4 Products Catalogue Grid -->
+        <div class="portal-products-grid" id="orderProductsContainer">
+          <!-- Rendered by account.js -->
+        </div>
+
+        <!-- Order Summary Card -->
+        <div style="background: var(--portal-card-bg); border: 1px solid var(--portal-border); border-radius: 4px; padding: 1.5rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--portal-cobalt); margin-bottom: 4px;">Order Summary (Reference Rates)</div>
+              <div style="font-size: 0.85rem; color: var(--portal-charcoal-muted);">Total Selected: <strong id="orderItemsCount">0 units</strong></div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 0.75rem; color: var(--portal-charcoal-muted); text-transform: uppercase;">Estimated Reference Total:</span>
+              <div style="font-family: var(--font-serif); font-size: 1.85rem; font-weight: 600; color: var(--portal-charcoal);" id="orderReferenceTotal">₹0</div>
+            </div>
+          </div>
+
+          <div class="auth-field" style="margin-bottom: 1rem;">
+            <label for="orderNotes" class="auth-label">Special Salon Instructions / Backbar Notes (Optional)</label>
+            <textarea id="orderNotes" class="auth-textarea" rows="2" placeholder="e.g. Opening supply for 6 wash stations. Prefer delivery by Friday."></textarea>
+          </div>
+
+          <button type="submit" class="auth-btn-primary auth-btn-lime" id="submitOrderBtn">
+            SUBMIT ORDER REQUEST FOR COMMERCIAL APPROVAL
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- TAB 3: BUSINESS PROFILE -->
+    <section class="dashboard-view" id="view-profile" aria-label="Business Profile">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500; margin-bottom: 0.35rem;">Salon Enterprise Profile</h2>
+        <p style="font-size: 0.875rem; color: var(--portal-charcoal-muted);">
+          Manage your verified business billing details, logistics destination, and GST identification.
+        </p>
+      </div>
+
+      <div id="profileAlert" class="auth-alert" style="display: none;"></div>
+
+      <div class="auth-card auth-card-wide" style="margin: 0; max-width: 100%;">
+        <form id="profileForm" class="auth-form">
+          <div class="auth-row">
+            <div class="auth-field">
+              <label for="profFullName" class="auth-label">Contact Person Name</label>
+              <input type="text" id="profFullName" class="auth-input" required>
+            </div>
+            <div class="auth-field">
+              <label for="profBusinessName" class="auth-label">Salon / Enterprise Name</label>
+              <input type="text" id="profBusinessName" class="auth-input" required>
+            </div>
+          </div>
+
+          <div class="auth-row">
+            <div class="auth-field">
+              <label for="profEmail" class="auth-label">Business Email (Registered)</label>
+              <input type="email" id="profEmail" class="auth-input" readonly disabled style="opacity: 0.7; cursor: not-allowed;">
+            </div>
+            <div class="auth-field">
+              <label for="profPhone" class="auth-label">Mobile Number</label>
+              <input type="tel" id="profPhone" class="auth-input" required>
+            </div>
+          </div>
+
+          <div class="auth-row">
+            <div class="auth-field">
+              <label for="profCity" class="auth-label">City</label>
+              <input type="text" id="profCity" class="auth-input" required>
+            </div>
+            <div class="auth-field">
+              <label for="profState" class="auth-label">State</label>
+              <input type="text" id="profState" class="auth-input" placeholder="e.g. Maharashtra, Karnataka">
+            </div>
+          </div>
+
+          <div class="auth-row">
+            <div class="auth-field">
+              <label for="profGstin" class="auth-label">GSTIN (Optional / Where Applicable)</label>
+              <input type="text" id="profGstin" class="auth-input" placeholder="e.g. 27AABCM7777M1Z5" maxlength="15">
+            </div>
+            <div class="auth-field">
+              <label for="profBillingAddress" class="auth-label">Billing Address</label>
+              <input type="text" id="profBillingAddress" class="auth-input" placeholder="Billing address for tax invoice">
+            </div>
+          </div>
+
+          <div class="auth-field">
+            <label for="profBusinessAddress" class="auth-label">Salon Delivery Address</label>
+            <textarea id="profBusinessAddress" class="auth-textarea" rows="2" placeholder="Full street address, landmark, PIN code"></textarea>
+          </div>
+
+          <button type="submit" class="auth-btn-primary" id="saveProfileBtn" style="max-width: 280px;">
+            SAVE PROFILE CHANGES
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 4: SECURITY & PASSWORD -->
+    <section class="dashboard-view" id="view-security" aria-label="Account Security and Password">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500; margin-bottom: 0.35rem;">Account Security</h2>
+        <p style="font-size: 0.875rem; color: var(--portal-charcoal-muted);">
+          Manage your account credentials, sign-in method, and security preferences.
+        </p>
+      </div>
+
+      <div id="securityAlert" class="auth-alert" style="display: none;"></div>
+
+      <div class="auth-card auth-card-wide" style="margin: 0; max-width: 100%;">
+        <!-- Auth Provider Status -->
+        <div style="padding: 1rem 1.25rem; background: var(--portal-surface); border: 1px solid var(--portal-border); border-radius: 4px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="font-size: 0.725rem; font-weight: 700; text-transform: uppercase; color: var(--portal-cobalt); margin-bottom: 2px;">Sign-In Method</div>
+            <div style="font-size: 0.95rem; font-weight: 600; color: var(--portal-charcoal);" id="authProviderLabel">Email &amp; Password</div>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--portal-charcoal-muted);">
+            Customer Account ID: <code style="font-family: monospace; background: rgba(0,0,0,0.05); padding: 2px 6px; border-radius: 2px;" id="accountIdDisplay">—</code>
+          </div>
+        </div>
+
+        <form id="changePasswordForm" class="auth-form">
+          <h3 style="font-size: 1.05rem; font-weight: 600; color: var(--portal-charcoal); margin-bottom: -0.25rem;">Change Password</h3>
+          <div class="auth-field" id="currentPasswordFieldWrap">
+            <label for="currentPassword" class="auth-label">Current Password</label>
+            <div class="password-input-wrap">
+              <input type="password" id="currentPassword" class="auth-input" placeholder="••••••••••••" autocomplete="current-password">
+              <button type="button" class="password-toggle-btn" id="toggleCurrentPasswordBtn" aria-label="Show password">
+                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-row">
+            <div class="auth-field">
+              <label for="newPassword" class="auth-label">New Password (min. 8 characters)</label>
+              <div class="password-input-wrap">
+                <input type="password" id="newPassword" class="auth-input" placeholder="••••••••••••" required minlength="8" autocomplete="new-password">
+                <button type="button" class="password-toggle-btn" id="toggleNewPasswordBtn" aria-label="Show password">
+                  <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="auth-field">
+              <label for="confirmNewPassword" class="auth-label">Confirm New Password</label>
+              <div class="password-input-wrap">
+                <input type="password" id="confirmNewPassword" class="auth-input" placeholder="••••••••••••" required minlength="8" autocomplete="new-password">
+                <button type="button" class="password-toggle-btn" id="toggleConfirmNewPasswordBtn" aria-label="Show password">
+                  <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="auth-btn-primary" id="changePasswordBtn" style="max-width: 280px;">
+            UPDATE PASSWORD
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Razorpay Sandbox Simulator Modal -->
+  <div class="portal-modal-backdrop" id="paymentModal">
+    <div class="portal-modal-card">
+      <div class="portal-modal-header">
+        <h3 class="portal-modal-title">Razorpay Online Payment</h3>
+        <button class="portal-modal-close" onclick="document.getElementById('paymentModal').classList.remove('is-open')" aria-label="Close">&times;</button>
+      </div>
+      <div id="payModalDetails">
+        <!-- Rendered by account.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Official B2B Tax Invoice Modal -->
+  <div class="portal-modal-backdrop" id="invoiceModal">
+    <div class="portal-modal-card" style="max-width: 820px;">
+      <div class="portal-modal-header">
+        <h3 class="portal-modal-title">B2B Commercial Tax Invoice</h3>
+        <button class="portal-modal-close" onclick="document.getElementById('invoiceModal').classList.remove('is-open')" aria-label="Close">&times;</button>
+      </div>
+      <div id="invoiceModalContent">
+        <!-- Rendered by account.js -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/scripts/account.js"></script>
+</body>
+</html>

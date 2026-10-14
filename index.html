@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Modish7 — Salon-Exclusive Premium Haircare | Partner Portal</title>
+  <meta name="description" content="Discover Modish7's salon-exclusive haircare collection. Designed for professional salon owners and haircare businesses across India. Enquire about salon orders, backbar essentials, and business partnerships.">
+  <link rel="canonical" href="https://modish7.in/">
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:site_name" content="Modish7">
+  <meta property="og:title" content="Modish7 — Salon-Exclusive Premium Haircare | Partner Portal">
+  <meta property="og:description" content="Elevate your salon's haircare ritual with Modish7. Vegan, sulphate-free backbar and retail essentials exclusively for professional salons.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://modish7.in/">
+  <meta property="og:image" content="/assets/modish7/shea-butter-shampoo-conditioner.webp">
+
+  <!-- Twitter Metadata -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Modish7 — Salon-Exclusive Premium Haircare">
+  <meta name="twitter:description" content="Designed for the salon ritual. Enquire about Modish7 professional haircare essentials for your salon.">
+
+  <!-- Preconnect to Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       SITE HEADER & NAVIGATION
+       ====================================================================== -->
+  <!-- ======================================================================
+       SITE HEADER & NAVIGATION (SOLID WARM IVORY)
+       ====================================================================== -->
+  <header class="site-header" id="siteHeader" role="banner">
+    <div class="container header-container">
+      
+      <!-- Brand Logo / Wordmark -->
+      <a href="#hero" class="header-brand" aria-label="Modish7 Home">
+        <img src="/favicon.png" alt="Modish7 Emblem" class="brand-logo-mark" width="32" height="32">
+        <div class="brand-text-wrap">
+          <span class="brand-title">Modish7</span>
+          <span class="brand-tag">Salon Exclusive</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="header-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#products" class="nav-link">The Collection</a></li>
+          <li><a href="#brand-story" class="nav-link">Our Approach</a></li>
+          <li><a href="#partnerships" class="nav-link">Salon Partnerships</a></li>
+          <li><a href="#enquiry" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <!-- Account Button & Dropdown Container -->
+        <div class="header-account-container" id="headerAccountContainer">
+          <a href="/login" class="header-account-btn" id="headerAuthLink" aria-label="Customer Account">
+            <svg class="header-account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span class="header-account-text" id="headerAccountText">LOGIN</span>
+            <svg class="header-account-chevron" id="headerAccountChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </a>
+
+          <!-- Dropdown menu (displayed when logged in on click/hover) -->
+          <div class="header-account-dropdown" id="headerAccountDropdown" style="display: none;">
+            <div class="dropdown-header">
+              <div class="dropdown-user-name" id="dropdownUserName">Customer Name</div>
+              <div class="dropdown-user-email" id="dropdownUserEmail">email@domain.com</div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="/account" class="dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+              My Account &amp; Orders
+            </a>
+            <a href="/account#profile" class="dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              Profile &amp; Addresses
+            </a>
+            <a href="/account#security" class="dropdown-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Security &amp; Password
+            </a>
+            <div class="dropdown-divider"></div>
+            <button type="button" class="dropdown-item text-danger" id="headerLogoutBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+
+        <a href="#enquiry" class="btn btn-primary btn-sm auth-btn-lime" id="headerCtaBtn">SALON ENQUIRY</a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open Navigation Menu" aria-expanded="false" aria-controls="mobileNavDrawer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Mobile Off-Canvas Drawer -->
+  <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop"></div>
+  <aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Mobile Navigation">
+    <div>
+      <div class="mobile-drawer-header">
+        <div class="header-brand">
+          <img src="/favicon.png" alt="Modish7 Emblem" class="brand-logo-mark" width="28" height="28">
+          <span class="brand-title">Modish7</span>
+        </div>
+        <button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close Navigation Menu">&times;</button>
+      </div>
+      <nav>
+        <ul class="mobile-nav-list">
+          <li><a href="#products" class="mobile-nav-link">The Collection</a></li>
+          <li><a href="#brand-story" class="mobile-nav-link">Our Approach</a></li>
+          <li><a href="#partnerships" class="mobile-nav-link">Salon Partnerships</a></li>
+          <li><a href="#enquiry" class="mobile-nav-link">Salon Enquiry</a></li>
+          <li id="mobileAuthItem"><a href="/login" class="mobile-nav-link" id="mobileAuthLink" style="color:var(--modish-cobalt); font-weight:600;">Login</a></li>
+          <li id="mobileLogoutItem" style="display: none;"><button class="mobile-nav-link" id="mobileLogoutBtn" style="color:#ef4444; background:none; border:none; font-size:1.35rem; cursor:pointer; padding:0; text-align:left; font-family:var(--font-serif);">Sign Out</button></li>
+        </ul>
+      </nav>
+    </div>
+    <div>
+      <a href="#enquiry" class="btn btn-primary btn-block mobile-drawer-cta">START SALON ENQUIRY</a>
+      <p style="font-size: 0.75rem; color: var(--text-charcoal-muted); margin-top: 1rem; text-align: center;">
+        Direct Inquiries: <a href="mailto:support@modish7.com" style="color: var(--modish-cobalt); font-weight: 600;">support@modish7.com</a>
+      </p>
+    </div>
+  </aside>
+
+  <!-- ======================================================================
+       HERO SECTION — FULL-SCREEN CINEMATIC VIDEO HERO
+       ====================================================================== -->
+  <section class="hero-video-section" id="hero" aria-label="Modish7 Professional Haircare Campaign Video">
+    <div class="hero-video-wrapper">
+      <video 
+        id="heroVideo" 
+        class="hero-video-element" 
+        autoplay 
+        muted 
+        loop 
+        playsinline 
+        preload="auto" 
+        poster="/assets/modish7/shea-butter-shampoo-conditioner.webp"
+        aria-label="Modish7 Professional Haircare Campaign Video"
+      >
+        <source src="/assets/modish7/hero-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- ONLY ONE ELEMENT OVER THE VIDEO -->
+      <div class="hero-cta-overlay">
+        <a href="#enquiry" class="btn btn-primary hero-single-cta" id="heroPartnerCta">
+          BECOME A SALON PARTNER
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       SEPARATE CLEAN IVORY TRUST STRIP (BELOW HERO)
+       ====================================================================== -->
+  <section class="trust-strip-section" aria-label="Professional Salon Assurance">
+    <div class="container">
+      <div class="trust-strip-grid">
+        
+        <div class="trust-strip-item">
+          <svg class="trust-strip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <span class="trust-strip-text">Professional Backbar &amp; Retail Formulations</span>
+        </div>
+
+        <div class="trust-strip-item">
+          <svg class="trust-strip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+          <span class="trust-strip-text">Direct Salon Supply · Zero Retail Distributions</span>
+        </div>
+
+        <div class="trust-strip-item">
+          <svg class="trust-strip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span class="trust-strip-text">Tailored for Indian Hair &amp; Hard Water</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       EXISTING WEBSITE OFFERS STRIP (REFERENCE ONLY)
+       ====================================================================== -->
+  <section class="offers-strip" aria-label="Reference Public Promotional Offers">
+    <div class="container">
+      <div class="offers-strip-inner">
+        <div class="offers-strip-heading">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <span>Current Website Offers (Reference Only)</span>
+        </div>
+        
+        <div class="offers-items-wrap">
+          <div class="offer-pill">
+            <span class="offer-pill-badge">COMPLIMENTARY</span>
+            <span>Free travel pouch worth <strong>₹500</strong> on orders above ₹999</span>
+          </div>
+          <div class="offer-pill">
+            <span class="offer-pill-badge">PROMOTIONAL</span>
+            <span><strong>5% off</strong> on orders above ₹1,499</span>
+          </div>
+          <div class="offer-pill">
+            <span class="offer-pill-badge">LOGISTICS</span>
+            <span>Free shipping across India on orders above <strong>₹499</strong></span>
+          </div>
+        </div>
+
+        <div class="offer-note">
+          *Note: Displayed promotions reflect current public store reference rates. Formal commercial salon volume allocations and business terms are finalized during the enquiry consultation.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       BRAND STORY — EDITORIAL PERSPECTIVE
+       ====================================================================== -->
+  <section class="brand-story-section" id="brand-story" aria-label="Brand Philosophy">
+    <div class="container">
+      <div class="brand-story-grid">
+        
+        <!-- Narrative Column -->
+        <div class="story-content">
+          <span class="section-label">THE PHILOSOPHY</span>
+          <h2 class="section-headline">
+            Haircare With a Professional Perspective.
+          </h2>
+          <p class="story-lead">
+            “Discover the Modish7 collection through a salon-focused experience built around thoughtful product selection, distinct haircare needs, and professional business relationships.”
+          </p>
+          <p class="story-body">
+            Modern salons need haircare that delivers undeniable immediate results at the wash station while giving clients tangible transformation to maintain at home. Modish7 bridges luxury botanical purity with professional-grade restorative performance — free of sulphates, parabens, and harsh chemical fillers.
+          </p>
+          <a href="#partnerships" class="btn btn-secondary">OUR SALON PARTNERSHIP APPROACH</a>
+        </div>
+
+        <!-- Editorial Pillars -->
+        <div class="story-pillars">
+          
+          <div class="pillar-card">
+            <div class="pillar-num">01 / FORMULATION</div>
+            <h3 class="pillar-title">Engineered for Indian Hair &amp; Hard Water</h3>
+            <p class="pillar-desc">
+              Mineral buildup from hard water and tropical humidity place unique stresses on hair cuticles. Our formulations actively dissolve mineral residue while infusing bio-compatible moisture.
+            </p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-num">02 / INTEGRITY</div>
+            <h3 class="pillar-title">Clean Beauty &amp; 100% Vegan Purity</h3>
+            <p class="pillar-desc">
+              Every formula is strictly cruelty-free, sulphate-free, and paraben-free. Powered by certified African Shea Butter, pure Moroccan Argan Oil, and structural keratin proteins.
+            </p>
+          </div>
+
+          <div class="pillar-card">
+            <div class="pillar-num">03 / BUSINESS</div>
+            <h3 class="pillar-title">Direct Salon Exclusivity &amp; Partnership</h3>
+            <p class="pillar-desc">
+              We collaborate directly with salon owners and creative directors to supply backbar stations, train stylists on application rituals, and ensure dependable stock replenishment.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       PRODUCTS SECTION — THE MODISH COLLECTION
+       ====================================================================== -->
+  <section class="products-section" id="products" aria-label="The Modish Collection">
+    <div class="container">
+      
+      <!-- Section Header -->
+      <div class="products-header-wrap">
+        <span class="section-label">THE MODISH COLLECTION</span>
+        <h2 class="section-headline">Designed for the Salon Ritual.</h2>
+        <p class="section-subtext">
+          Explore four distinctive haircare essentials and enquire about ordering them for your salon.
+        </p>
+      </div>
+
+      <!-- Asymmetrical Editorial Product Showcase -->
+      <div class="products-grid">
+        
+        <!-- PRODUCT 01 — SIGNATURE COMBO (Extended Featured Spread) -->
+        <article class="product-card product-card-featured" data-product-id="shea-butter-combo">
+          
+          <div class="product-media-wrap">
+            <div class="product-badge-wrap">
+              <span class="product-category-tag product-signature-tag">SIGNATURE COMBO</span>
+              <span class="product-category-tag">DUAL-BOTTLE PAIRING</span>
+            </div>
+            <img 
+              src="/assets/modish7/shea-butter-shampoo-conditioner.webp" 
+              alt="Modish7 Shea Butter Shampoo &amp; Conditioner Combo (350ml + 350ml) cobalt blue packaging" 
+              class="product-img"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="product-details-wrap">
+            <h3 class="product-title">
+              Modish7 Shea Butter Shampoo &amp; Conditioner Combo (350ml + 350ml)
+            </h3>
+            
+            <p class="product-description">
+              A complete wash-and-condition ritual for hair that feels dry, rough, or over-processed. This signature Modish7 pairing combines a deeply hydrating shea butter shampoo with a rich repairing conditioner, both enriched with argan oil and keratin to rebuild strand strength and restore softness at the salon backbar.
+            </p>
+
+            <div class="product-specs-list">
+              <span class="product-spec-chip">350ml + 350ml Pairing</span>
+              <span class="product-spec-chip">Keratin &amp; Argan Infused</span>
+              <span class="product-spec-chip">Sulphate &amp; Paraben-Free</span>
+              <span class="product-spec-chip">Cuticle Sealing pH 4.5</span>
+            </div>
+
+            <div class="product-pricing-box">
+              <div class="price-offer-wrap">
+                <span class="price-offer">₹3,230</span>
+                <span class="price-mrp">MRP ₹3,400</span>
+              </div>
+              <span class="price-ref-label">Current Website Offer</span>
+            </div>
+
+            <div class="product-actions-wrap">
+              <button type="button" class="btn btn-primary btn-enquire-product" id="enquireBtnCombo">
+                ENQUIRE FOR SALON ORDERS
+              </button>
+              <button type="button" class="btn-view-spec" data-spec-id="shea-butter-combo">
+                View Ingredients &amp; Salon Application &rarr;
+              </button>
+            </div>
+          </div>
+
+        </article>
+
+        <!-- PRODUCT 02 — LEAVE-IN CARE -->
+        <article class="product-card product-card-standard" data-product-id="mks-eco-detangler">
+          
+          <div class="product-media-wrap">
+            <div class="product-badge-wrap">
+              <span class="product-category-tag">LEAVE-IN CARE</span>
+            </div>
+            <img 
+              src="/assets/modish7/mks-eco-leave-in-detangler.webp" 
+              alt="MKS eco X Leave-In &amp; Detangler Original Scent 118ml spray bottle" 
+              class="product-img"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="product-details-wrap">
+            <h3 class="product-title">
+              MKS eco X Leave-In &amp; Detangler, Original Scent (118ml)
+            </h3>
+
+            <p class="product-description">
+              A professional spray-on conditioning mist that softens knots on contact, creates effortless comb slip, and leaves hair silky without heavy residue. Essential prep before salon blowout and styling.
+            </p>
+
+            <div class="product-specs-list">
+              <span class="product-spec-chip">118ml Spray Mist</span>
+              <span class="product-spec-chip">Argan &amp; Hemp Seed Oil</span>
+              <span class="product-spec-chip">Thermal Friction Shield</span>
+            </div>
+
+            <div class="product-pricing-box">
+              <div class="price-offer-wrap">
+                <span class="price-offer">₹2,089</span>
+                <span class="price-mrp">MRP ₹2,199</span>
+              </div>
+              <span class="price-ref-label">Current Website Offer</span>
+            </div>
+
+            <div class="product-actions-wrap">
+              <button type="button" class="btn btn-primary btn-enquire-product" id="enquireBtnDetangler">
+                ENQUIRE FOR SALON ORDERS
+              </button>
+              <button type="button" class="btn-view-spec" data-spec-id="mks-eco-detangler">
+                View Ingredients &amp; Salon Application &rarr;
+              </button>
+            </div>
+          </div>
+
+        </article>
+
+        <!-- PRODUCT 03 — CONDITIONING CARE -->
+        <article class="product-card product-card-standard" data-product-id="shea-butter-conditioner">
+          
+          <div class="product-media-wrap">
+            <div class="product-badge-wrap">
+              <span class="product-category-tag">CONDITIONING CARE</span>
+            </div>
+            <img 
+              src="/assets/modish7/shea-butter-conditioner.webp" 
+              alt="Modish7 Shea Butter Conditioner 350ml cobalt bottle with gold pump" 
+              class="product-img"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="product-details-wrap">
+            <h3 class="product-title">
+              Modish7 Shea Butter Conditioner (350ml)
+            </h3>
+
+            <p class="product-description">
+              Intense moisture infusion designed to seal porous cuticles and restore softness to parched hair. Pure shea butter and botanical emollients rebuild lipid barriers without weighing strands down.
+            </p>
+
+            <div class="product-specs-list">
+              <span class="product-spec-chip">350ml Backbar &amp; Retail</span>
+              <span class="product-spec-chip">High-Porosity Nourishment</span>
+              <span class="product-spec-chip">Instant Cuticle Smoothing</span>
+            </div>
+
+            <div class="product-pricing-box">
+              <div class="price-offer-wrap">
+                <span class="price-offer">₹1,615</span>
+                <span class="price-mrp">MRP ₹1,700</span>
+              </div>
+              <span class="price-ref-label">Current Website Offer</span>
+            </div>
+
+            <div class="product-actions-wrap">
+              <button type="button" class="btn btn-primary btn-enquire-product" id="enquireBtnConditioner">
+                ENQUIRE FOR SALON ORDERS
+              </button>
+              <button type="button" class="btn-view-spec" data-spec-id="shea-butter-conditioner">
+                View Ingredients &amp; Salon Application &rarr;
+              </button>
+            </div>
+          </div>
+
+        </article>
+
+        <!-- PRODUCT 04 — SCALP CARE -->
+        <article class="product-card product-card-standard" data-product-id="anti-dandruff-shampoo">
+          
+          <div class="product-media-wrap">
+            <div class="product-badge-wrap">
+              <span class="product-category-tag">SCALP CARE</span>
+            </div>
+            <img 
+              src="/assets/modish7/anti-dandruff-shampoo.webp" 
+              alt="Modish7 Anti-Dandruff Shampoo 350ml cobalt bottle with gold pump" 
+              class="product-img"
+              loading="lazy"
+            >
+          </div>
+
+          <div class="product-details-wrap">
+            <h3 class="product-title">
+              Modish7 Anti-Dandruff Shampoo (350ml)
+            </h3>
+
+            <p class="product-description">
+              A targeted botanical scalp clarification formula that gently lifts flaking, soothes scalp itchiness, and balances sebum production without drying out lengths or stripping cosmetic color.
+            </p>
+
+            <div class="product-specs-list">
+              <span class="product-spec-chip">350ml Scalp Cleanser</span>
+              <span class="product-spec-chip">Botanical Scalp Rebalance</span>
+              <span class="product-spec-chip">Colour-Safe &amp; Sulphate-Free</span>
+            </div>
+
+            <div class="product-pricing-box">
+              <div class="price-offer-wrap">
+                <span class="price-offer">₹1,615</span>
+                <span class="price-mrp">MRP ₹1,700</span>
+              </div>
+              <span class="price-ref-label">Current Website Offer</span>
+            </div>
+
+            <div class="product-actions-wrap">
+              <button type="button" class="btn btn-primary btn-enquire-product" id="enquireBtnDandruff">
+                ENQUIRE FOR SALON ORDERS
+              </button>
+              <button type="button" class="btn-view-spec" data-spec-id="anti-dandruff-shampoo">
+                View Ingredients &amp; Salon Application &rarr;
+              </button>
+            </div>
+          </div>
+
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       SALON PARTNERSHIP EXPERIENCE (3 SIMPLE STEPS)
+       ====================================================================== -->
+  <section class="partnership-section" id="partnerships" aria-label="Salon Partnership Process">
+    <div class="container">
+      
+      <div style="text-align: center; max-width: 720px; margin: 0 auto;">
+        <span class="section-label">PARTNERSHIP JOURNEY</span>
+        <h2 class="section-headline">Let's Build Your Salon's Haircare Offering.</h2>
+        <p class="section-subtext" style="margin: 0 auto;">
+          A simple, transparent process connecting salon owners with direct Modish7 business allocations.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <h3 class="step-title">EXPLORE</h3>
+          <p class="step-text">
+            Explore the featured Modish7 products, review backbar specifications, and evaluate which formulations best match your salon clients' hair profiles.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <h3 class="step-title">ENQUIRE</h3>
+          <p class="step-text">
+            Tell us about your salon, the products you're interested in, and the quantities required using our structured salon partner enquiry form below.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <h3 class="step-title">CONNECT</h3>
+          <p class="step-text">
+            The Modish7 team can follow up through the verified business contact channel to discuss the enquiry, order volumes, and applicable commercial terms.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="partnership-cta-wrap">
+        <a href="#enquiry" class="btn btn-primary" id="partnershipCtaBtn">START A SALON ENQUIRY</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       SALON ENQUIRY FORM — PRIMARY CONVERSION
+       ====================================================================== -->
+  <section class="enquiry-section" id="enquiry" aria-label="Salon Business Enquiry Form">
+    <div class="container-narrow">
+      
+      <div class="enquiry-form-card">
+        
+        <div class="enquiry-form-header">
+          <span class="section-label" style="justify-content: center;">DIRECT SALON DESK</span>
+          <h2 class="enquiry-form-title">Start Your Salon Business Enquiry</h2>
+          <p class="enquiry-form-subtitle">
+            Submit your details below to discuss product allocations, batch quantities, and commercial terms with the Modish7 team.
+          </p>
+        </div>
+
+        <!-- Success Alert State -->
+        <div class="form-status-alert" id="formSuccessAlert" role="alert" aria-live="polite">
+          <h3 class="status-alert-title">Enquiry Successfully Prepared &amp; Logged</h3>
+          <p class="status-alert-details">
+            Thank you! Your salon enquiry has been recorded with reference: <strong id="enquiryRefNumber">MOD-SALON-XXXXX</strong>.
+            You can also connect immediately via our verified business desk below:
+          </p>
+          <div style="margin: 1.25rem 0; background: #FFFFFF; border: 1px solid #B8E0CA; padding: 1rem; font-family: monospace; font-size: 0.8rem; white-space: pre-wrap;" id="enquirySummaryBox"></div>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="#" class="btn btn-primary btn-sm" id="whatsappChannelBtn" target="_blank" rel="noopener noreferrer">
+              OPEN IN BUSINESS WHATSAPP &rarr;
+            </a>
+            <a href="mailto:support@modish7.com" class="btn btn-secondary btn-sm" id="emailChannelBtn">
+              SEND VIA EMAIL TO SUPPORT &rarr;
+            </a>
+            <button type="button" class="btn btn-secondary btn-sm" id="copyEnquiryBtn">
+              COPY ENQUIRY SUMMARY
+            </button>
+          </div>
+        </div>
+
+        <!-- Error Alert State -->
+        <div class="form-status-alert" id="formErrorAlert" role="alert" aria-live="polite">
+          <h3 class="status-alert-title" style="color: #9B1C1C;">Please Review the Form</h3>
+          <p class="status-alert-details">
+            One or more required fields are incomplete. Please verify the highlighted details below before submitting.
+          </p>
+        </div>
+
+        <form id="salonEnquiryForm" novalidate aria-label="Salon Business Enquiry">
+          
+          <!-- Products of Interest Selection Grid -->
+          <div class="form-products-selector-title">
+            <span>Select Products of Interest <span class="req" style="color: var(--modish-cobalt);">*</span></span>
+            <span class="selector-hint">Click cards to toggle selection</span>
+          </div>
+
+          <div class="form-products-grid">
+            
+            <!-- Product Option 01 -->
+            <div class="form-product-option" data-product-id="shea-butter-combo" data-product-title="Modish7 Shea Butter Shampoo &amp; Conditioner Combo (350ml + 350ml)" data-ref-price="₹3,230">
+              <div class="form-product-checkbox-wrap">
+                <input type="checkbox" id="checkCombo" class="form-product-checkbox" value="Modish7 Shea Butter Combo">
+                <label for="checkCombo" class="form-product-name-label">Shea Butter Combo</label>
+              </div>
+              <img src="/assets/modish7/shea-butter-shampoo-conditioner.webp" alt="Combo Thumbnail" class="form-product-thumb">
+              <div class="form-product-ref-price">
+                ₹3,230 <span class="form-product-mrp">₹3,400</span>
+              </div>
+            </div>
+
+            <!-- Product Option 02 -->
+            <div class="form-product-option" data-product-id="mks-eco-detangler" data-product-title="MKS eco X Leave-In &amp; Detangler (118ml)" data-ref-price="₹2,089">
+              <div class="form-product-checkbox-wrap">
+                <input type="checkbox" id="checkDetangler" class="form-product-checkbox" value="MKS eco Leave-In Detangler">
+                <label for="checkDetangler" class="form-product-name-label">MKS eco Detangler</label>
+              </div>
+              <img src="/assets/modish7/mks-eco-leave-in-detangler.webp" alt="Detangler Thumbnail" class="form-product-thumb">
+              <div class="form-product-ref-price">
+                ₹2,089 <span class="form-product-mrp">₹2,199</span>
+              </div>
+            </div>
+
+            <!-- Product Option 03 -->
+            <div class="form-product-option" data-product-id="shea-butter-conditioner" data-product-title="Modish7 Shea Butter Conditioner (350ml)" data-ref-price="₹1,615">
+              <div class="form-product-checkbox-wrap">
+                <input type="checkbox" id="checkConditioner" class="form-product-checkbox" value="Modish7 Shea Butter Conditioner">
+                <label for="checkConditioner" class="form-product-name-label">Shea Conditioner</label>
+              </div>
+              <img src="/assets/modish7/shea-butter-conditioner.webp" alt="Conditioner Thumbnail" class="form-product-thumb">
+              <div class="form-product-ref-price">
+                ₹1,615 <span class="form-product-mrp">₹1,700</span>
+              </div>
+            </div>
+
+            <!-- Product Option 04 -->
+            <div class="form-product-option" data-product-id="anti-dandruff-shampoo" data-product-title="Modish7 Anti-Dandruff Shampoo (350ml)" data-ref-price="₹1,615">
+              <div class="form-product-checkbox-wrap">
+                <input type="checkbox" id="checkDandruff" class="form-product-checkbox" value="Modish7 Anti-Dandruff Shampoo">
+                <label for="checkDandruff" class="form-product-name-label">Anti-Dandruff Shampoo</label>
+              </div>
+              <img src="/assets/modish7/anti-dandruff-shampoo.webp" alt="Shampoo Thumbnail" class="form-product-thumb">
+              <div class="form-product-ref-price">
+                ₹1,615 <span class="form-product-mrp">₹1,700</span>
+              </div>
+            </div>
+
+          </div>
+          <span class="field-error-msg" id="productSelectError" style="margin-top: -1.5rem; margin-bottom: 1.5rem;"></span>
+
+          <!-- Contact & Business Fields -->
+          <div class="form-grid">
+            
+            <!-- Salon / Business Name -->
+            <div class="form-group">
+              <label for="salonName" class="form-label">
+                Salon or Business Name <span class="req">*</span>
+              </label>
+              <input type="text" id="salonName" name="salonName" class="form-input" placeholder="e.g. Aura Luxury Salon &amp; Spa" required>
+              <span class="field-error-msg"></span>
+            </div>
+
+            <!-- Contact Person Name -->
+            <div class="form-group">
+              <label for="contactPerson" class="form-label">
+                Contact Person's Name <span class="req">*</span>
+              </label>
+              <input type="text" id="contactPerson" name="contactPerson" class="form-input" placeholder="e.g. Priya Sharma (Creative Director)" required>
+              <span class="field-error-msg"></span>
+            </div>
+
+            <!-- Business Phone -->
+            <div class="form-group">
+              <label for="phone" class="form-label">
+                Business Phone Number <span class="req">*</span>
+              </label>
+              <input type="tel" id="phone" name="phone" class="form-input" placeholder="e.g. +91 98765 43210" required>
+              <span class="field-error-msg"></span>
+            </div>
+
+            <!-- Business Email -->
+            <div class="form-group">
+              <label for="email" class="form-label">
+                Business Email Address <span class="req">*</span>
+              </label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="e.g. contact@aurasalon.com" required>
+              <span class="field-error-msg"></span>
+            </div>
+
+            <!-- City / Region -->
+            <div class="form-group">
+              <label for="city" class="form-label">
+                City &amp; State <span class="req">*</span>
+              </label>
+              <input type="text" id="city" name="city" class="form-input" placeholder="e.g. Mumbai, Maharashtra" required>
+              <span class="field-error-msg"></span>
+            </div>
+
+            <!-- Business Type -->
+            <div class="form-group">
+              <label for="businessType" class="form-label">
+                Business Type
+              </label>
+              <select id="businessType" name="businessType" class="form-select">
+                <option value="Premium Hair Salon">Premium Hair Salon</option>
+                <option value="Boutique Styling Studio">Boutique Styling Studio</option>
+                <option value="Luxury Day Spa">Luxury Day Spa</option>
+                <option value="Hair Academy / Academy Studio">Hair Academy / Academy Studio</option>
+                <option value="Salon Chain / Multi-Location">Salon Chain / Multi-Location</option>
+                <option value="Freelance Session Stylist">Freelance Session Stylist</option>
+              </select>
+            </div>
+
+            <!-- Requested Quantities -->
+            <div class="form-group form-group-full">
+              <label for="orderQuantity" class="form-label">
+                Estimated Order Batch Size
+              </label>
+              <select id="orderQuantity" name="orderQuantity" class="form-select">
+                <option value="Trial Batch (6–12 units total)">Trial Batch (6–12 units total) — Backbar testing</option>
+                <option value="Salon Stock (24–48 units total)" selected>Salon Stock (24–48 units total) — Standard rotation</option>
+                <option value="Multi-Chair Salon Volume (50–100+ units)">Multi-Chair Salon Volume (50–100+ units)</option>
+                <option value="Custom Commercial Quantity">Custom Commercial Quantity (Specify in notes)</option>
+              </select>
+            </div>
+
+            <!-- Additional Requirements / Notes -->
+            <div class="form-group form-group-full">
+              <label for="additionalNotes" class="form-label">
+                Additional Requirements or Questions
+              </label>
+              <textarea id="additionalNotes" name="additionalNotes" class="form-textarea" placeholder="Tell us about your salon's monthly client volume, specific backbar needs, or timeline..."></textarea>
+            </div>
+
+          </div>
+
+          <!-- Acknowledgement Checkbox -->
+          <div class="form-ack-wrap">
+            <input type="checkbox" id="businessAck" name="businessAck" class="form-ack-checkbox" required>
+            <label class="form-ack-text" for="businessAck">
+              I acknowledge that this enquiry is submitted on behalf of a salon business, spa, or professional haircare enterprise. <span class="req" style="color: var(--modish-cobalt);">*</span>
+            </label>
+          </div>
+          <span class="field-error-msg" id="ackError"></span>
+
+          <!-- Submit CTA -->
+          <div class="form-submit-actions">
+            <button type="submit" class="btn btn-primary btn-submit-enquiry" id="submitEnquiryBtn">
+              SUBMIT SALON ENQUIRY
+            </button>
+
+            <!-- Direct Support Channel Options -->
+            <div class="form-alternative-channels">
+              <span class="channel-prompt">Direct verified desk:</span>
+              <a href="mailto:support@modish7.com?subject=Salon%20Partnership%20Enquiry" class="btn-channel">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <span>support@modish7.com</span>
+              </a>
+              <span style="font-size: 0.75rem; color: var(--text-charcoal-muted);">Operating under official Modish7 standards</span>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       FINAL CALL TO ACTION
+       ====================================================================== -->
+  <section class="final-cta-section" id="final-cta" aria-label="Closing Call to Action">
+    <div class="container">
+      <div class="final-cta-content">
+        <span class="section-label" style="color: #64B5F6; justify-content: center;">
+          THE SALON PARTNERSHIP
+        </span>
+        <h2 class="final-cta-headline">Bring Modish7 Into Your Salon.</h2>
+        <p class="final-cta-subtext">
+          Explore the collection and connect with us about salon orders.
+        </p>
+        <a href="#enquiry" class="btn btn-primary" id="finalCtaBtn">BECOME A SALON PARTNER</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       SITE FOOTER
+       ====================================================================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      
+      <div class="footer-top-grid">
+        
+        <!-- Brand Summary -->
+        <div>
+          <div class="footer-brand-title">Modish7</div>
+          <p class="footer-brand-desc">
+            Professional vegan, sulphate-free haircare engineered for Indian hair and salon rituals. Direct salon partnerships across India.
+          </p>
+          <div class="footer-contact-item">
+            <span>Official Email:</span>
+            <a href="mailto:support@modish7.com">support@modish7.com</a>
+          </div>
+          <div class="footer-contact-item">
+            <span>Public Store:</span>
+            <a href="https://modish7.in/" target="_blank" rel="noopener noreferrer">modish7.in &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div>
+          <h4 class="footer-col-title">Navigation</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#hero" class="footer-nav-link">Top of Page</a></li>
+            <li><a href="#products" class="footer-nav-link">The Collection</a></li>
+            <li><a href="#brand-story" class="footer-nav-link">Brand Philosophy</a></li>
+            <li><a href="#partnerships" class="footer-nav-link">Salon Journey</a></li>
+            <li><a href="#enquiry" class="footer-nav-link">Salon Enquiry</a></li>
+          </ul>
+        </div>
+
+        <!-- Featured Products Reference -->
+        <div>
+          <h4 class="footer-col-title">Featured Products</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#products" class="footer-nav-link">Shea Butter Combo (350ml+350ml)</a></li>
+            <li><a href="#products" class="footer-nav-link">MKS eco Leave-In Detangler (118ml)</a></li>
+            <li><a href="#products" class="footer-nav-link">Shea Butter Conditioner (350ml)</a></li>
+            <li><a href="#products" class="footer-nav-link">Anti-Dandruff Shampoo (350ml)</a></li>
+          </ul>
+        </div>
+
+        <!-- Salon Exclusivity Notice -->
+        <div>
+          <div class="footer-salon-notice">
+            <h4 class="footer-notice-title">Salon Exclusivity Notice</h4>
+            <p class="footer-notice-text">
+              This landing page is exclusively curated for licensed salons, beauty studios, spa directors, and professional haircare buyers. All order terms and commercial volumes are managed through our partner desk.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Bottom Legal Strip -->
+      <div class="footer-bottom-bar">
+        <div>
+          &copy; 2026 Modish7. All rights reserved. This website operates under the laws of India.
+        </div>
+        <div class="footer-legal-links">
+          <a href="https://modish7.in/policies/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+          <a href="https://modish7.in/policies/terms-of-service" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+          <a href="https://modish7.in/policies/shipping-policy" target="_blank" rel="noopener noreferrer">Shipping Policy</a>
+          <a href="https://modish7.in/policies/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>
+          <a href="https://modish7.in/policies/legal-notice" target="_blank" rel="noopener noreferrer">Legal Notice</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       PRODUCT SPECIFICATION MODAL
+       ====================================================================== -->
+  <div class="spec-modal-backdrop" id="specModal" role="dialog" aria-modal="true" aria-labelledby="modalProductTitle">
+    <div class="spec-modal-window">
+      <button class="spec-modal-close-btn" id="specModalClose" aria-label="Close Specification Dialog">&times;</button>
+      
+      <span class="spec-modal-tag" id="modalProductTag">Category · Volume</span>
+      <h3 class="spec-modal-title" id="modalProductTitle">Product Title</h3>
+
+      <div class="spec-detail-section">
+        <h4 class="spec-detail-heading">Suitable Hair Types</h4>
+        <p class="spec-detail-content" id="modalHairTypes"></p>
+      </div>
+
+      <div class="spec-detail-section">
+        <h4 class="spec-detail-heading">Key Active Ingredients</h4>
+        <p class="spec-detail-content" id="modalIngredients"></p>
+      </div>
+
+      <div class="spec-detail-section">
+        <h4 class="spec-detail-heading">Salon Backbar Application Ritual</h4>
+        <p class="spec-detail-content" id="modalBackbarUsage"></p>
+      </div>
+
+      <div class="spec-detail-section" style="border-bottom: none; margin-bottom: 0;">
+        <h4 class="spec-detail-heading">pH Balance &amp; Cuticle Action</h4>
+        <p class="spec-detail-content" id="modalPhBalance"></p>
+      </div>
+
+      <div style="margin-top: 2rem; text-align: right;">
+        <a href="#enquiry" class="btn btn-primary btn-sm" onclick="document.getElementById('specModalClose').click()">
+          ENQUIRE FOR THIS PRODUCT &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Bundle -->
+  <script type="module" src="/src/scripts/main.js"></script>
+</body>
+</html>
