@@ -1,7 +1,10 @@
 import { Auth } from './auth.js';
+import { CartManager } from './cart.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initHeader();
+  CartManager.init();
+  initProductShoppingControls();
   initHeroVideo();
   initMobileNav();
   initSmoothScroll();
@@ -135,7 +138,7 @@ function initHeader() {
 }
 
 /* --------------------------------------------------------------------------
-   2. Hero Video Optimization, Cross-Browser Playback & Reduced Motion
+   2. Hero Video Optimization, Cross-Browser Playback & Diagnostics
    -------------------------------------------------------------------------- */
 function initHeroVideo() {
   const video = document.getElementById('heroVideo');
@@ -144,6 +147,16 @@ function initHeroVideo() {
 
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const mobileQuery = window.matchMedia('(max-width: 768px)');
+
+  // 1. Crucial cross-browser mobile & desktop video attributes
+  video.muted = true;
+  video.defaultMuted = true;
+  video.volume = 0;
+  video.playsInline = true;
+  video.loop = true;
+  video.setAttribute('muted', '');
+  video.setAttribute('playsinline', '');
+  video.setAttribute('webkit-playsinline', '');
 
   // Responsive poster selection
   function updatePoster() {
@@ -157,20 +170,17 @@ function initHeroVideo() {
   }
   updatePoster();
 
-  // Crucial cross-browser mobile & desktop video attributes
-  video.muted = true;
-  video.defaultMuted = true;
-  video.playsInline = true;
-  video.setAttribute('muted', '');
-  video.setAttribute('playsinline', '');
-  video.setAttribute('webkit-playsinline', '');
-  video.loop = true;
-
-  let hasUserInteracted = false;
-  let isPlayRequested = false;
+  // State flags for unified playback management
+  let playPromise = null;
+  let isPlayPending = false;
+  let isIntentionallyPaused = false;
   let retryListenersAttached = false;
+  let isHeroInView = true;
+  let stallWatchdogTimer = null;
+  let lastObservedTime = 0;
+  let confirmedPlaying = false;
 
-  // Track playback status on container for graceful styling & fallback
+  // Visual state management on hero container
   function setVideoState(state) {
     heroSection.dataset.videoState = state;
     if (state === 'playing') {
@@ -184,156 +194,228 @@ function initHeroVideo() {
     }
   }
 
-  // Attempt playback safely handling returned promise
+  // Unified, safe playback executor
   async function attemptPlay() {
-    if (motionQuery.matches) {
-      // Gracefully honour reduced motion without broken hero
-      video.pause();
-      setVideoState('fallback');
+    // If hero is scrolled out of view or tab is hidden, don't play
+    if (!isHeroInView || document.visibilityState === 'hidden') {
       return;
     }
 
-    if (isPlayRequested) return;
-    isPlayRequested = true;
+    // If playback is already requested and in flight, wait for it
+    if (isPlayPending) {
+      return;
+    }
+
+    // Re-assert muting prerequisites (critical for mobile Safari & battery saver)
+    video.muted = true;
+    video.volume = 0;
+    video.defaultMuted = true;
+
+    isIntentionallyPaused = false;
+    isPlayPending = true;
 
     try {
-      video.muted = true;
-      const playPromise = video.play();
+      playPromise = video.play();
       if (playPromise !== undefined) {
         await playPromise;
-        setVideoState('playing');
-        detachRetryListeners();
       }
     } catch (err) {
-      // Autoplay restricted by browser policy (e.g. low-power mode, battery saver)
-      // Keep approved visual poster fallback and listen for safe interaction
-      setVideoState('fallback');
-      attachRetryListeners();
+      if (err.name === 'AbortError') {
+        // Play was interrupted by safe pause/load - benign, will resume when visible
+        return;
+      }
+      if (err.name === 'NotAllowedError') {
+        // Browser autoplay policy restricted - attach genuine activation listeners
+        setVideoState('fallback');
+        attachUserActivationRecovery();
+      } else {
+        // Media or decoding issue
+        console.warn('[Modish7 Hero Video] Playback exception:', err.name);
+        setVideoState('fallback');
+      }
     } finally {
-      isPlayRequested = false;
+      isPlayPending = false;
+      playPromise = null;
     }
   }
 
-  // Graceful retry on user interaction without infinite loop
-  function onUserInteraction() {
-    if (hasUserInteracted) return;
-    hasUserInteracted = true;
-    detachRetryListeners();
-    if (!motionQuery.matches && video.paused) {
+  // Safe pause helper that prevents unhandled AbortError when play is pending
+  function safePause() {
+    isIntentionallyPaused = true;
+    clearStallWatchdog();
+
+    if (isPlayPending && playPromise) {
+      playPromise
+        .then(() => {
+          if (isIntentionallyPaused && !video.paused) {
+            video.pause();
+          }
+        })
+        .catch(() => {});
+    } else if (!video.paused) {
+      video.pause();
+    }
+  }
+
+  // Genuine user activation recovery (excludes scroll/wheel per browser specifications)
+  function onActivationGesture() {
+    if (video.paused && isHeroInView && document.visibilityState === 'visible') {
       attemptPlay();
     }
   }
 
-  function attachRetryListeners() {
-    if (retryListenersAttached || hasUserInteracted) return;
+  function attachUserActivationRecovery() {
+    if (retryListenersAttached) return;
     retryListenersAttached = true;
-    const events = ['touchstart', 'pointerdown', 'click', 'scroll', 'keydown'];
-    events.forEach(evt => {
-      window.addEventListener(evt, onUserInteraction, { once: true, passive: true });
+    const activationEvents = ['pointerdown', 'touchstart', 'click', 'keydown'];
+    activationEvents.forEach(evt => {
+      window.addEventListener(evt, onActivationGesture, { passive: true });
     });
   }
 
-  function detachRetryListeners() {
+  function detachUserActivationRecovery() {
     if (!retryListenersAttached) return;
     retryListenersAttached = false;
-    const events = ['touchstart', 'pointerdown', 'click', 'scroll', 'keydown'];
-    events.forEach(evt => {
-      window.removeEventListener(evt, onUserInteraction);
+    const activationEvents = ['pointerdown', 'touchstart', 'click', 'keydown'];
+    activationEvents.forEach(evt => {
+      window.removeEventListener(evt, onActivationGesture);
     });
   }
 
-  // Media event handlers for diagnostic accuracy and resilience
-  video.addEventListener('loadedmetadata', () => {
-    updatePoster();
-  });
+  // Stall & Buffering Watchdog
+  function scheduleStallRecovery() {
+    clearStallWatchdog();
+    stallWatchdogTimer = setTimeout(() => {
+      if (isHeroInView && document.visibilityState === 'visible') {
+        if (video.paused) {
+          attemptPlay();
+        } else if (video.readyState >= 2) {
+          // Playback might be hung on frame - nudge currentTime slightly if stuck
+          video.currentTime = video.currentTime + 0.01;
+        }
+      }
+    }, 2800);
+  }
 
-  video.addEventListener('canplay', () => {
-    if (!motionQuery.matches && video.paused && !hasUserInteracted) {
-      attemptPlay();
+  function clearStallWatchdog() {
+    if (stallWatchdogTimer) {
+      clearTimeout(stallWatchdogTimer);
+      stallWatchdogTimer = null;
     }
+  }
+
+  // Media Event Handlers
+  video.addEventListener('playing', () => {
+    confirmedPlaying = true;
+    clearStallWatchdog();
+    setVideoState('playing');
+    detachUserActivationRecovery();
   });
 
-  video.addEventListener('playing', () => {
-    setVideoState('playing');
+  video.addEventListener('timeupdate', () => {
+    // Only mark truly playing once currentTime actually advances
+    if (video.currentTime > 0.05) {
+      if (!confirmedPlaying) {
+        confirmedPlaying = true;
+        setVideoState('playing');
+        detachUserActivationRecovery();
+      }
+      lastObservedTime = video.currentTime;
+    }
   });
 
   video.addEventListener('waiting', () => {
     setVideoState('waiting');
+    scheduleStallRecovery();
   });
 
   video.addEventListener('stalled', () => {
-    // Retain currently rendered frame or poster, avoid blanking
-    if (video.paused && !motionQuery.matches) {
-      setVideoState('waiting');
+    setVideoState('waiting');
+    scheduleStallRecovery();
+  });
+
+  video.addEventListener('pause', () => {
+    if (!isIntentionallyPaused && isHeroInView && document.visibilityState === 'visible') {
+      // Unexpected pause (e.g. system interrupt or power event) - schedule recovery
+      scheduleStallRecovery();
+    }
+  });
+
+  video.addEventListener('canplay', () => {
+    if (video.paused && isHeroInView && document.visibilityState === 'visible') {
+      attemptPlay();
     }
   });
 
   video.addEventListener('error', () => {
-    console.warn('[Modish7 Hero Video] Playback error occurred:', video.error);
+    console.warn('[Modish7 Hero Video] Media error:', video.error);
     setVideoState('fallback');
   });
 
-  // Handle visibility changes (preserve battery / avoid running while backgrounded)
+  // Tab visibility changes (gracefully pause in background, resume when active)
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
-      if (!video.paused) {
-        video.pause();
-      }
+      safePause();
     } else if (document.visibilityState === 'visible') {
-      if (!motionQuery.matches && video.paused && isHeroInView) {
+      if (isHeroInView) {
         attemptPlay();
       }
     }
   });
 
   // IntersectionObserver for view-aware playback
-  let isHeroInView = true;
   if ('IntersectionObserver' in window) {
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         isHeroInView = entry.isIntersecting;
         if (isHeroInView) {
-          if (!motionQuery.matches && video.paused) {
+          if (document.visibilityState === 'visible' && video.paused) {
             attemptPlay();
           }
         } else {
-          if (!video.paused) {
-            video.pause();
-          }
+          safePause();
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: [0, 0.15] });
 
     videoObserver.observe(heroSection);
-  }
-
-  // Handle live toggle of reduced motion preference
-  motionQuery.addEventListener('change', (e) => {
-    if (e.matches) {
-      video.pause();
-      setVideoState('fallback');
-    } else {
-      attemptPlay();
-    }
-  });
-
-  // Handle viewport resize across mobile/desktop breakpoint cleanly
-  mobileQuery.addEventListener('change', (e) => {
-    updatePoster();
-    const wasPlaying = !video.paused;
-    video.load();
-    if (wasPlaying && !motionQuery.matches) {
-      attemptPlay();
-    }
-  });
-
-  // Initial trigger
-  if (motionQuery.matches) {
-    video.pause();
-    setVideoState('fallback');
   } else {
-    attemptPlay();
+    isHeroInView = true;
   }
+
+  // Handle responsive breakpoint changes smoothly without freezing or unneeded reloads
+  let lastMode = mobileQuery.matches ? 'mobile' : 'desktop';
+  mobileQuery.addEventListener('change', (e) => {
+    const newMode = e.matches ? 'mobile' : 'desktop';
+    if (newMode === lastMode) return;
+    lastMode = newMode;
+    updatePoster();
+
+    // Determine target video file
+    const targetSrcKeyword = newMode === 'mobile' ? 'hero-video-mobile' : 'hero-video.mp4';
+    const currentSrc = video.currentSrc || '';
+
+    // Only reload if currentSrc is actually playing the wrong asset
+    if (!currentSrc.includes(targetSrcKeyword)) {
+      const wasPlaying = !video.paused;
+      const savedTime = video.currentTime;
+
+      video.addEventListener('loadedmetadata', function onMeta() {
+        video.removeEventListener('loadedmetadata', onMeta);
+        if (savedTime > 0 && isFinite(savedTime) && video.duration && savedTime < video.duration) {
+          try { video.currentTime = savedTime; } catch (_) {}
+        }
+        if (wasPlaying && isHeroInView && document.visibilityState === 'visible') {
+          attemptPlay();
+        }
+      }, { once: true });
+
+      video.load();
+    }
+  });
+
+  // Initial playback launch
+  attemptPlay();
 }
 
 /* --------------------------------------------------------------------------
@@ -396,7 +478,88 @@ function initSmoothScroll() {
 }
 
 /* --------------------------------------------------------------------------
-   5. Interactive Product Sync with Enquiry Form
+   5. Direct Product Shopping Controls (Quantity, Add to Cart, Buy Now)
+   -------------------------------------------------------------------------- */
+function initProductShoppingControls() {
+  // Quantity Decrement (-)
+  document.querySelectorAll('.btn-qty-dec').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const parent = btn.closest('.product-qty-selector');
+      const input = parent ? parent.querySelector('.product-qty-input') : null;
+      if (input) {
+        let val = parseInt(input.value, 10) || 1;
+        if (val > 1) {
+          input.value = val - 1;
+        }
+      }
+    });
+  });
+
+  // Quantity Increment (+)
+  document.querySelectorAll('.btn-qty-inc').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const parent = btn.closest('.product-qty-selector');
+      const input = parent ? parent.querySelector('.product-qty-input') : null;
+      if (input) {
+        let val = parseInt(input.value, 10) || 1;
+        if (val < 99) {
+          input.value = val + 1;
+        }
+      }
+    });
+  });
+
+  // Bounds validation on manual type
+  document.querySelectorAll('.product-qty-input').forEach(input => {
+    input.addEventListener('change', () => {
+      let val = parseInt(input.value, 10);
+      if (isNaN(val) || val < 1) val = 1;
+      if (val > 99) val = 99;
+      input.value = val;
+    });
+  });
+
+  // Add to Cart
+  document.querySelectorAll('.btn-add-to-cart').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const productId = btn.dataset.productId;
+      const card = btn.closest('.product-card');
+      const qtyInput = card ? card.querySelector('.product-qty-input') : null;
+      const quantity = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
+
+      // Subtle button feedback
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '✓ ADDED';
+      btn.style.backgroundColor = '#16a34a';
+      setTimeout(() => {
+        btn.innerHTML = originalHtml;
+        btn.style.backgroundColor = '';
+      }, 1000);
+
+      CartManager.addItem(productId, quantity, true);
+    });
+  });
+
+  // Buy Now (Adds to cart and routes immediately to checkout)
+  document.querySelectorAll('.btn-buy-now').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const productId = btn.dataset.productId;
+      const card = btn.closest('.product-card');
+      const qtyInput = card ? card.querySelector('.product-qty-input') : null;
+      const quantity = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
+
+      CartManager.addItem(productId, quantity, false);
+      window.location.href = '/checkout';
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   6. Interactive Product Sync with Enquiry Form
    -------------------------------------------------------------------------- */
 function initProductEnquirySync() {
   const productCards = document.querySelectorAll('.product-card');

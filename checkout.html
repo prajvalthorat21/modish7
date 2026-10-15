@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direct Salon Checkout — Modish7 Professional Haircare</title>
+  <meta name="description" content="Complete your Modish7 salon supply order. Secure checkout with official GST tax invoicing and Razorpay gateway.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/src/styles/main.css">
+  <link rel="stylesheet" href="/src/styles/portal.css">
+  <link rel="stylesheet" href="/src/styles/checkout.css">
+
+  <!-- Razorpay Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+</head>
+<body class="checkout-body">
+
+  <!-- Minimalist Premium Header -->
+  <header class="checkout-header">
+    <div class="checkout-header-inner">
+      <a href="/" class="checkout-brand" aria-label="Modish7 Home">
+        <img src="/favicon.png" alt="Modish7 Logo" class="checkout-brand-mark" width="28" height="28">
+        <div>
+          <span class="checkout-brand-title">Modish7</span>
+          <span class="checkout-brand-sub">Direct Salon Supply · India</span>
+        </div>
+      </a>
+
+      <!-- Security Assurance Pill -->
+      <div class="checkout-security-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>256-Bit Encrypted &middot; Razorpay Verified</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Checkout Main Container -->
+  <main class="checkout-container">
+    
+    <!-- Top Step Breadcrumbs -->
+    <nav class="checkout-breadcrumbs" aria-label="Checkout Progress">
+      <a href="/" class="breadcrumb-step is-complete">
+        <span class="step-num">1</span>
+        <span>The Collection</span>
+      </a>
+      <span class="breadcrumb-separator">&rarr;</span>
+      <span class="breadcrumb-step is-complete">
+        <span class="step-num">2</span>
+        <span>Shopping Bag</span>
+      </span>
+      <span class="breadcrumb-separator">&rarr;</span>
+      <span class="breadcrumb-step is-active">
+        <span class="step-num">3</span>
+        <span>Delivery &amp; Review</span>
+      </span>
+      <span class="breadcrumb-separator">&rarr;</span>
+      <span class="breadcrumb-step" id="crumbPayment">
+        <span class="step-num">4</span>
+        <span>Confirmation</span>
+      </span>
+    </nav>
+
+    <!-- Empty Cart Alert View (hidden when cart has items) -->
+    <div id="checkoutEmptyCartView" class="checkout-empty-view" style="display: none;">
+      <div class="checkout-empty-card">
+        <div class="checkout-empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+        </div>
+        <h2 class="checkout-empty-title">Your shopping bag is currently empty</h2>
+        <p class="checkout-empty-text">
+          Add one or more products from the Modish7 salon collection before proceeding to checkout.
+        </p>
+        <a href="/#products" class="btn btn-primary auth-btn-lime">EXPLORE THE COLLECTION</a>
+      </div>
+    </div>
+
+    <!-- Active Checkout Layout Grid (Form on Left, Live Summary on Right) -->
+    <div id="checkoutActiveLayout" class="checkout-grid">
+      
+      <!-- LEFT COLUMN: Delivery & Customer Information -->
+      <section class="checkout-main-col" aria-label="Customer and Delivery Details">
+        
+        <!-- Auth Bar Notice -->
+        <div class="checkout-auth-banner" id="checkoutAuthBanner">
+          <div class="auth-banner-content">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <div id="checkoutAuthPrompt">
+              Already have a Salon Account? <a href="/login?redirect=/checkout" class="auth-banner-link">Log in</a> to autofill your saved business &amp; delivery details.
+            </div>
+          </div>
+        </div>
+
+        <form id="checkoutForm" novalidate>
+          
+          <!-- SECTION 1: Customer Contact -->
+          <div class="checkout-card">
+            <h2 class="checkout-card-title">
+              <span class="card-title-num">1</span>
+              Customer &amp; Salon Details
+            </h2>
+
+            <div class="form-grid">
+              
+              <div class="form-group">
+                <label for="custFullName" class="form-label">Full Name <span class="req">*</span></label>
+                <input type="text" id="custFullName" name="fullName" class="form-input" placeholder="e.g. Priya Sharma" required>
+                <span class="field-error-msg" id="errFullName"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="custBusinessName" class="form-label">Salon or Business Name</label>
+                <input type="text" id="custBusinessName" name="businessName" class="form-input" placeholder="e.g. Aura Luxury Hair Lounge">
+                <span class="field-error-msg"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="custEmail" class="form-label">Email Address <span class="req">*</span></label>
+                <input type="email" id="custEmail" name="email" class="form-input" placeholder="e.g. contact@aurasalon.com" required>
+                <span class="field-error-msg" id="errEmail"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="custPhone" class="form-label">Mobile Phone (for delivery updates) <span class="req">*</span></label>
+                <input type="tel" id="custPhone" name="phone" class="form-input" placeholder="e.g. 9876543210" required>
+                <span class="field-error-msg" id="errPhone"></span>
+              </div>
+
+              <!-- Guest Account Creation Toggle (only if guest) -->
+              <div class="form-group form-group-full" id="guestPasswordGroup" style="display: none;">
+                <label for="custPassword" class="form-label">Create Password (Optional — to view order history in My Account)</label>
+                <input type="password" id="custPassword" name="password" class="form-input" placeholder="At least 8 characters">
+                <small style="font-size:0.75rem; color:#666;">We will create your verified salon shopping account automatically with this order.</small>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SECTION 2: Delivery Address -->
+          <div class="checkout-card">
+            <h2 class="checkout-card-title">
+              <span class="card-title-num">2</span>
+              Delivery Address (Across India)
+            </h2>
+
+            <div class="form-grid">
+              
+              <div class="form-group form-group-full">
+                <label for="shipAddress" class="form-label">Street Address &amp; Salon Unit <span class="req">*</span></label>
+                <input type="text" id="shipAddress" name="address" class="form-input" placeholder="Shop 4, Ground Floor, Royal Arcade, Linking Road" required>
+                <span class="field-error-msg" id="errAddress"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="shipCity" class="form-label">City <span class="req">*</span></label>
+                <input type="text" id="shipCity" name="city" class="form-input" placeholder="e.g. Mumbai" required>
+                <span class="field-error-msg" id="errCity"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="shipState" class="form-label">State <span class="req">*</span></label>
+                <input type="text" id="shipState" name="state" class="form-input" placeholder="e.g. Maharashtra" required>
+                <span class="field-error-msg" id="errState"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="shipPincode" class="form-label">PIN Code <span class="req">*</span></label>
+                <input type="text" id="shipPincode" name="pincode" maxlength="6" class="form-input" placeholder="e.g. 400050" required>
+                <span class="field-error-msg" id="errPincode"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="shipGstin" class="form-label">GSTIN (Optional, for B2B input tax credit)</label>
+                <input type="text" id="shipGstin" name="gstin" maxlength="15" class="form-input" placeholder="e.g. 27ABCDE1234F1Z5" style="text-transform: uppercase;">
+                <span class="field-error-msg"></span>
+              </div>
+
+              <div class="form-group form-group-full">
+                <label for="orderNotes" class="form-label">Delivery Instructions (Optional)</label>
+                <textarea id="orderNotes" name="notes" class="form-textarea" rows="2" placeholder="e.g. Deliver between 11 AM – 6 PM. Landmark near Metro Station."></textarea>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div class="checkout-error-alert" id="checkoutFormError" style="display: none;"></div>
+
+          <!-- Checkout Action -->
+          <div class="checkout-submit-wrap">
+            <button type="submit" class="btn btn-primary auth-btn-lime btn-block checkout-pay-btn" id="proceedToPayBtn">
+              <span class="pay-btn-label">PROCEED TO SECURE PAYMENT &rarr;</span>
+              <span class="pay-btn-total" id="payBtnAmount">₹0</span>
+            </button>
+            <div class="checkout-guarantee">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span>Encrypted 256-bit payment &middot; 100% Authentic Modish7 Salon Formulations &middot; GST Tax Invoice Issued</span>
+            </div>
+          </div>
+
+        </form>
+
+      </section>
+
+      <!-- RIGHT COLUMN: Order Summary & Real-Time Calculation -->
+      <aside class="checkout-summary-col" aria-label="Order Summary">
+        <div class="checkout-summary-card">
+          
+          <div class="summary-card-header">
+            <h3 class="summary-card-title">Order Summary</h3>
+            <span class="summary-items-count" id="summaryUnitsCount">0 items</span>
+          </div>
+
+          <!-- Products Line Items -->
+          <div class="summary-items-list" id="summaryItemsList">
+            <!-- Rendered by checkout.js -->
+          </div>
+
+          <!-- Active Store Offers Ribbon -->
+          <div class="summary-offers-ribbon" id="summaryOffersRibbon">
+            <!-- Active offers badges -->
+          </div>
+
+          <!-- Calculations Breakdown -->
+          <div class="summary-calc-box">
+            <div class="calc-row">
+              <span class="calc-label">Subtotal</span>
+              <span class="calc-value" id="calcSubtotal">₹0</span>
+            </div>
+
+            <div class="calc-row is-discount" id="rowDiscount" style="display: none;">
+              <span class="calc-label">
+                <span class="tag-discount">5% OFF</span> Salon Volume Discount
+              </span>
+              <span class="calc-value" id="calcDiscount">-₹0</span>
+            </div>
+
+            <div class="calc-row">
+              <span class="calc-label">Shipping across India</span>
+              <span class="calc-value" id="calcShipping">FREE</span>
+            </div>
+
+            <div class="calc-row is-tax">
+              <span class="calc-label">GST Included (18%)</span>
+              <span class="calc-value" id="calcTax">₹0</span>
+            </div>
+
+            <div class="calc-divider"></div>
+
+            <div class="calc-row is-total">
+              <div>
+                <span class="total-title">Total Payable</span>
+                <span class="total-sub">All taxes &amp; fees included</span>
+              </div>
+              <span class="total-amount" id="calcTotal">₹0</span>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- ORDER CONFIRMATION VIEW (Shown after successful payment verification) -->
+    <section id="checkoutSuccessView" class="checkout-success-view" style="display: none;" aria-live="polite">
+      <div class="success-card">
+        <div class="success-icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="40" height="40">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+
+        <span class="success-eyebrow">ORDER CONFIRMED &amp; PAYMENT VERIFIED</span>
+        <h1 class="success-title">Thank you for your salon order!</h1>
+        <p class="success-subtext">
+          Your order has been verified and registered with our salon fulfillment desk. An official GST tax invoice has been generated.
+        </p>
+
+        <!-- Order Meta Pill Grid -->
+        <div class="success-meta-grid">
+          <div class="meta-card">
+            <div class="meta-label">Order Reference</div>
+            <div class="meta-value" id="confirmOrderId">ORD-MOD7-XXXX</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">Payment ID</div>
+            <div class="meta-value" id="confirmPaymentId">pay_XXXXX</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">Amount Paid</div>
+            <div class="meta-value" id="confirmTotalPaid">₹0</div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-label">Delivery Tracking</div>
+            <div class="meta-value" id="confirmTrackingNumber">MOD7-EXP-XXXX</div>
+          </div>
+        </div>
+
+        <!-- Ordered Items Summary -->
+        <div class="success-items-box" id="confirmItemsBox">
+          <!-- Populated by checkout.js -->
+        </div>
+
+        <!-- Success Actions -->
+        <div class="success-actions">
+          <button type="button" class="btn btn-primary auth-btn-lime" id="confirmViewInvoiceBtn">
+            VIEW GST TAX INVOICE
+          </button>
+          <a href="/account" class="btn btn-secondary">
+            GO TO MY ACCOUNT &amp; ORDERS
+          </a>
+          <a href="/" class="btn btn-secondary">
+            CONTINUE SHOPPING
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Razorpay Sandbox Verification Modal (for dev/test mode) -->
+  <div class="portal-modal-backdrop" id="checkoutPaymentModal" role="dialog" aria-modal="true" aria-labelledby="sandboxModalTitle">
+    <div class="portal-modal-window" style="max-width: 520px;">
+      <button class="portal-modal-close" id="closePaymentModalBtn" aria-label="Close">&times;</button>
+      <div style="font-size: 0.75rem; font-weight: 700; color: #0047AB; text-transform: uppercase; margin-bottom: 0.25rem;">
+        Razorpay Payment Gateway
+      </div>
+      <h3 id="sandboxModalTitle" style="font-family: var(--font-serif); font-size: 1.75rem; margin-bottom: 1rem;">
+        Authorize &amp; Verify Payment
+      </h3>
+      <div id="checkoutSandboxContent">
+        <!-- Injected by checkout.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- GST Tax Invoice Modal -->
+  <div class="portal-modal-backdrop" id="checkoutInvoiceModal" role="dialog" aria-modal="true">
+    <div class="portal-modal-window portal-invoice-window" style="max-width: 760px;">
+      <button class="portal-modal-close" id="closeInvoiceModalBtn" aria-label="Close">&times;</button>
+      <div id="checkoutInvoiceContent">
+        <!-- Rendered by checkout.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Checkout Script -->
+  <script type="module" src="/src/scripts/checkout.js"></script>
+</body>
+</html>

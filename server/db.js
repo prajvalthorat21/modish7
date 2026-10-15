@@ -126,10 +126,25 @@ export function initDatabase() {
     );
   `);
 
-  // Safe idempotent column additions for Google OAuth and customer profile flexibility
+  // Safe idempotent column additions for Google OAuth, customer profile, and e-commerce shipping
   try { db.exec("ALTER TABLE salons ADD COLUMN auth_provider TEXT DEFAULT 'email';"); } catch {}
   try { db.exec("ALTER TABLE salons ADD COLUMN google_id TEXT DEFAULT NULL;"); } catch {}
   try { db.exec("ALTER TABLE salons ADD COLUMN avatar_url TEXT DEFAULT '';"); } catch {}
+  try { db.exec("ALTER TABLE salons ADD COLUMN pincode TEXT DEFAULT '';"); } catch {}
+
+  // Safe idempotent column additions for direct e-commerce checkout on orders
+  try { db.exec("ALTER TABLE orders ADD COLUMN shipping_name TEXT DEFAULT '';"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN shipping_phone TEXT DEFAULT '';"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN shipping_business_name TEXT DEFAULT '';"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN shipping_address TEXT DEFAULT '';"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN shipping_city TEXT DEFAULT '';"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN shipping_state TEXT DEFAULT '';"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN shipping_pincode TEXT DEFAULT '';"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN subtotal_amount INTEGER DEFAULT 0;"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN discount_amount INTEGER DEFAULT 0;"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN shipping_fee INTEGER DEFAULT 0;"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN gift_item TEXT DEFAULT '';"); } catch {}
+  try { db.exec("ALTER TABLE orders ADD COLUMN order_type TEXT DEFAULT 'DIRECT_ECOMMERCE';"); } catch {}
 
   seedProducts();
 }

@@ -97,6 +97,7 @@ function renderProfile() {
   document.getElementById('profPhone').value = currentSalon.phone || '';
   document.getElementById('profCity').value = currentSalon.city || '';
   document.getElementById('profState').value = currentSalon.state || '';
+  document.getElementById('profPincode').value = currentSalon.pincode || '';
   document.getElementById('profGstin').value = currentSalon.gstin || '';
   document.getElementById('profBusinessAddress').value = currentSalon.business_address || '';
   document.getElementById('profBillingAddress').value = currentSalon.billing_address || '';
@@ -118,6 +119,7 @@ function initProfileForm() {
       phone: document.getElementById('profPhone').value.trim(),
       city: document.getElementById('profCity').value.trim(),
       state: document.getElementById('profState').value.trim(),
+      pincode: document.getElementById('profPincode').value.trim(),
       gstin: document.getElementById('profGstin').value.trim(),
       businessAddress: document.getElementById('profBusinessAddress').value.trim(),
       billingAddress: document.getElementById('profBillingAddress').value.trim()
@@ -354,7 +356,7 @@ function initOrderForm() {
     const notes = document.getElementById('orderNotes').value.trim();
     const submitBtn = document.getElementById('submitOrderBtn');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'SUBMITTING ORDER REQUEST...';
+    submitBtn.textContent = 'CREATING ORDER...';
 
     try {
       const res = await Auth.authFetch('/api/orders', {
@@ -368,15 +370,20 @@ function initOrderForm() {
         document.getElementById('orderNotes').value = '';
         calculateOrderTotal();
 
-        alertEl.textContent = 'Order request submitted successfully. Our commercial team will review and approve your quotation.';
+        alertEl.textContent = 'Direct salon order created successfully! Opening payment gateway...';
         alertEl.className = 'auth-alert auth-alert-success';
         alertEl.style.display = 'block';
 
         // Reload orders and switch to orders tab
         await loadOrders();
-        setTimeout(() => {
-          document.querySelector('[data-view="orders"]')?.click();
-        }, 1200);
+        document.querySelector('[data-view="orders"]')?.click();
+
+        // Immediately launch payment flow for direct e-commerce order
+        if (data.order && data.order.id) {
+          setTimeout(() => {
+            window.startPayment(data.order.id);
+          }, 400);
+        }
       } else {
         alertEl.textContent = data.error || 'Failed to submit order request.';
         alertEl.className = 'auth-alert auth-alert-error';
@@ -388,7 +395,7 @@ function initOrderForm() {
       alertEl.style.display = 'block';
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = 'SUBMIT ORDER REQUEST FOR COMMERCIAL APPROVAL';
+      submitBtn.textContent = 'CREATE ORDER & PROCEED TO PAYMENT';
     }
   });
 }
@@ -414,8 +421,8 @@ function updateStats(orders) {
   const paidOrdersEl = document.getElementById('statPaidOrders');
 
   if (totalOrdersEl) totalOrdersEl.textContent = orders.length;
-  if (pendingOrdersEl) pendingOrdersEl.textContent = orders.filter(o => o.status === 'PENDING_REVIEW').length;
-  if (approvedOrdersEl) approvedOrdersEl.textContent = orders.filter(o => o.status === 'QUOTATION_APPROVED').length;
+  if (pendingOrdersEl) pendingOrdersEl.textContent = orders.filter(o => o.status === 'PAYMENT_PENDING' || o.status === 'PENDING_REVIEW').length;
+  if (approvedOrdersEl) approvedOrdersEl.textContent = orders.filter(o => o.status === 'PAID' && o.delivery_status !== 'DELIVERED').length;
   if (paidOrdersEl) paidOrdersEl.textContent = orders.filter(o => o.status === 'PAID').length;
 }
 
@@ -426,9 +433,12 @@ function renderOrdersList(orders) {
   if (orders.length === 0) {
     container.innerHTML = `
       <div style="text-align: center; padding: 3rem 1rem; background: var(--portal-card-bg); border: 1px solid var(--portal-border); border-radius: 4px;">
-        <h4 style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 0.5rem;">No Salon Order Requests Yet</h4>
-        <p style="color: var(--portal-charcoal-muted); font-size: 0.875rem; margin-bottom: 1.5rem;">Select products and quantities from the catalogue to submit your first commercial supply request.</p>
-        <button class="btn btn-primary btn-sm" onclick="document.querySelector('[data-view=\\'catalogue\\']')?.click()">BROWSE PRODUCTS &amp; ORDER</button>
+        <h4 style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 0.5rem;">No Salon Orders Yet</h4>
+        <p style="color: var(--portal-charcoal-muted); font-size: 0.875rem; margin-bottom: 1.5rem;">Browse products or order from the quick catalogue to place your first direct salon order.</p>
+        <div style="display:flex; justify-content:center; gap:1rem;">
+          <a href="/#products" class="btn btn-primary btn-sm auth-btn-lime">SHOP STOREFRONT</a>
+          <button class="btn btn-secondary btn-sm" onclick="document.querySelector('[data-view=\\'catalogue\\']')?.click()">QUICK REORDER</button>
+        </div>
       </div>
     `;
     return;
@@ -440,9 +450,10 @@ function renderOrdersList(orders) {
         <thead>
           <tr>
             <th>Order Ref &amp; Date</th>
-            <th>Items Requested</th>
+            <th>Items &amp; Benefits</th>
+            <th>Delivery Address</th>
             <th>Status</th>
-            <th>Payable Amount</th>
+            <th>Amount</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -458,10 +469,10 @@ function renderOrdersList(orders) {
                   Simulate Approval
                 </button>
               `;
-            } else if (order.status === 'QUOTATION_APPROVED' || order.status === 'PAYMENT_PENDING') {
-              statusBadge = `<span class="status-badge status-approved">Quotation Approved</span>`;
+            } else if (order.status === 'PAYMENT_PENDING' || order.status === 'QUOTATION_APPROVED') {
+              statusBadge = `<span class="status-badge status-pending" style="background:#FEF3C7; color:#92400E; border:1px solid #FCD34D;">Payment Pending</span>`;
               actionBtn = `
-                <button class="btn btn-primary btn-sm auth-btn-lime" style="font-size:0.75rem; padding: 0.4rem 0.8rem;" onclick="window.startPayment('${order.id}')">
+                <button class="btn btn-primary btn-sm auth-btn-lime" style="font-size:0.75rem; padding: 0.45rem 0.9rem;" onclick="window.startPayment('${order.id}')">
                   PAY ONLINE
                 </button>
               `;
@@ -474,7 +485,20 @@ function renderOrdersList(orders) {
               `;
             }
 
-            const itemsSummary = (order.items || []).map(i => `${i.product_name} (${i.quantity}x)`).join('<br>');
+            const itemsSummary = (order.items || []).map(i => `<strong>${i.quantity}x</strong> ${i.product_name}`).join('<br>');
+            const benefits = [];
+            if (order.discount_amount > 0) {
+              benefits.push(`<span style="color:#059669; font-size:0.75rem; font-weight:600;">✓ 5% Off (-₹${order.discount_amount.toLocaleString('en-IN')})</span>`);
+            }
+            if (order.gift_item) {
+              benefits.push(`<span style="color:#7C3AED; font-size:0.75rem; font-weight:600;">🎁 ${order.gift_item}</span>`);
+            }
+            if (order.shipping_fee === 0) {
+              benefits.push(`<span style="color:#2563EB; font-size:0.75rem; font-weight:600;">🚚 Free Shipping</span>`);
+            }
+
+            const benefitsHtml = benefits.length ? `<div style="margin-top:4px; display:flex; flex-direction:column; gap:2px;">${benefits.join('')}</div>` : '';
+
             const displayAmount = order.approved_payable_amount || order.reference_total_amount;
             const formattedDate = new Date(order.created_at).toLocaleDateString('en-IN', {
               day: 'numeric',
@@ -482,17 +506,42 @@ function renderOrdersList(orders) {
               year: 'numeric'
             });
 
+            const shippingDest = order.shipping_city 
+              ? `${order.shipping_address ? order.shipping_address + ', ' : ''}${order.shipping_city}${order.shipping_pincode ? ' - ' + order.shipping_pincode : ''}`
+              : (currentSalon.city || 'Standard Address');
+
+            const trackingHtml = order.tracking_number 
+              ? `<div style="margin-top:4px; font-size:0.7rem; color:var(--portal-charcoal-muted);">AWB: <code style="background:rgba(0,0,0,0.05); padding:1px 4px; border-radius:2px;">${order.tracking_number}</code></div>`
+              : '';
+
             return `
               <tr>
                 <td>
-                  <strong>${order.id}</strong><br>
+                  <strong style="font-size:0.85rem;">${order.id}</strong><br>
                   <small style="color:var(--portal-charcoal-muted);">${formattedDate}</small>
+                  <div style="margin-top:4px;">
+                    <span style="font-size:0.65rem; background:#EFF6FF; color:#1D4ED8; padding:2px 6px; border-radius:3px; text-transform:uppercase; font-weight:700;">
+                      ${order.order_type === 'DIRECT_ECOMMERCE' ? 'Direct Order' : 'Commercial Enquiry'}
+                    </span>
+                  </div>
                 </td>
-                <td style="font-size:0.8rem; line-height:1.4;">${itemsSummary}</td>
-                <td>${statusBadge}</td>
+                <td style="font-size:0.8rem; line-height:1.4;">
+                  ${itemsSummary}
+                  ${benefitsHtml}
+                </td>
+                <td style="font-size:0.8rem; color:var(--portal-charcoal); line-height:1.4;">
+                  <strong>${order.shipping_name || currentSalon.full_name}</strong><br>
+                  ${order.shipping_business_name ? `<span style="color:var(--portal-charcoal-muted);">${order.shipping_business_name}</span><br>` : ''}
+                  <span style="font-size:0.75rem; color:var(--portal-charcoal-muted);">${shippingDest}</span>
+                  ${trackingHtml}
+                </td>
+                <td>
+                  ${statusBadge}
+                  ${order.status === 'PAID' ? `<br><small style="color:#059669; font-size:0.75rem; font-weight:600;">Dispatched</small>` : ''}
+                </td>
                 <td>
                   <strong style="font-size:0.95rem;">₹${displayAmount.toLocaleString('en-IN')}</strong>
-                  ${order.status === 'QUOTATION_APPROVED' ? '<br><small style="color:var(--portal-cobalt); font-weight:600;">Confirmed Rate</small>' : '<br><small style="color:var(--portal-charcoal-muted);">Ref Total</small>'}
+                  <br><small style="color:var(--portal-charcoal-muted);">Final Total</small>
                 </td>
                 <td>${actionBtn}</td>
               </tr>
@@ -715,12 +764,34 @@ window.openInvoice = async function(orderId) {
                 <td style="text-align:right;">₹${i.subtotal.toLocaleString('en-IN')}</td>
               </tr>
             `).join('')}
+            ${order.gift_item ? `
+              <tr style="background: #F5F3FF;">
+                <td style="color: #6D28D9; font-weight: 600;">🎁 ${order.gift_item} (Tier Promotion)</td>
+                <td style="text-align:center;">1</td>
+                <td style="text-align:right; text-decoration: line-through; color: #9CA3AF;">₹500</td>
+                <td style="text-align:right; color: #6D28D9; font-weight: 700;">FREE</td>
+              </tr>
+            ` : ''}
           </tbody>
         </table>
 
         <div class="invoice-totals">
           <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
-            <span>Taxable Value:</span>
+            <span>Subtotal:</span>
+            <span>₹${(order.subtotal_amount || invoice.amount_taxable).toLocaleString('en-IN')}</span>
+          </div>
+          ${order.discount_amount > 0 ? `
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:#059669;">
+              <span>Volume Discount (5%):</span>
+              <span>-₹${order.discount_amount.toLocaleString('en-IN')}</span>
+            </div>
+          ` : ''}
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+            <span>Shipping:</span>
+            <span>${order.shipping_fee === 0 ? '<strong style="color:#059669;">FREE</strong>' : `₹${order.shipping_fee}`}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+            <span>Taxable Base Value:</span>
             <span>₹${invoice.amount_taxable.toLocaleString('en-IN')}</span>
           </div>
           <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
@@ -732,7 +803,7 @@ window.openInvoice = async function(orderId) {
             <span>₹${invoice.sgst_amount.toLocaleString('en-IN')}</span>
           </div>
           <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.1rem; border-top:1px solid #E5E7EB; padding-top:6px;">
-            <span>Total Payable:</span>
+            <span>Total Paid (INR):</span>
             <span>₹${invoice.total_amount.toLocaleString('en-IN')}</span>
           </div>
         </div>

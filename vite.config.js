@@ -32,6 +32,8 @@ export default defineConfig({
             req.url = '/register.html' + (parsed.search || '');
           } else if (parsed.pathname === '/account') {
             req.url = '/account.html' + (parsed.search || '');
+          } else if (parsed.pathname === '/checkout') {
+            req.url = '/checkout.html' + (parsed.search || '');
           }
 
           next();
@@ -45,7 +47,8 @@ export default defineConfig({
         main: path.resolve(process.cwd(), 'index.html'),
         login: path.resolve(process.cwd(), 'login.html'),
         register: path.resolve(process.cwd(), 'register.html'),
-        account: path.resolve(process.cwd(), 'account.html')
+        account: path.resolve(process.cwd(), 'account.html'),
+        checkout: path.resolve(process.cwd(), 'checkout.html')
       }
     }
   }

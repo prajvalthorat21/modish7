@@ -50,6 +50,97 @@ function sendJson(res, statusCode, payload) {
 }
 
 /**
+ * Server-authoritative Order Pricing & Offer Evaluation Engine
+ * Evaluates live verified store rules:
+ * 1. 5% off orders >= ₹1,499
+ * 2. Free complimentary travel pouch (value ₹500) on orders >= ₹999
+ * 3. Free shipping across India on orders >= ₹499 (otherwise ₹99 shipping)
+ */
+export function calculateOrderPricing(items) {
+  if (!Array.isArray(items) || items.length === 0) {
+    return {
+      items: [],
+      subtotal: 0,
+      discountAmount: 0,
+      discountEligible: false,
+      discountPercent: 0,
+      giftItem: '',
+      giftEligible: false,
+      freeShipping: false,
+      shippingFee: 0,
+      totalAmount: 0,
+      taxIncludedAmount: 0,
+      currency: 'INR'
+    };
+  }
+
+  let subtotal = 0;
+  const validatedItems = [];
+
+  for (const item of items) {
+    const qty = parseInt(item.quantity, 10);
+    if (isNaN(qty) || qty <= 0) {
+      throw new Error('Quantity must be a positive integer.');
+    }
+
+    const product = db.prepare('SELECT * FROM products WHERE id = ?').get(item.productId);
+    if (!product) {
+      throw new Error(`Product ID not recognized: ${item.productId}`);
+    }
+
+    const itemSubtotal = product.reference_offer_price * qty;
+    subtotal += itemSubtotal;
+
+    validatedItems.push({
+      productId: product.id,
+      productName: product.name,
+      category: product.category,
+      size: product.size,
+      imageUrl: product.image_url,
+      quantity: qty,
+      unitPrice: product.reference_offer_price,
+      mrp: product.mrp,
+      subtotal: itemSubtotal
+    });
+  }
+
+  // 1. Promotional Savings: 5% off orders >= 1,499
+  const discountEligible = subtotal >= 1499;
+  const discountAmount = discountEligible ? Math.round(subtotal * 0.05) : 0;
+
+  // 2. Complimentary Gift: Travel Pouch worth ₹500 on qualifying orders >= 999
+  const giftEligible = subtotal >= 999;
+  const giftItem = giftEligible ? 'Complimentary Modish7 Travel Pouch (Value ₹500)' : '';
+
+  // 3. Shipping: Free shipping across India on orders >= 499 (else ₹99 standard express shipping)
+  const freeShipping = subtotal >= 499;
+  const shippingFee = (subtotal === 0 || freeShipping) ? 0 : 99;
+
+  // Final Payable Total
+  const totalAmount = Math.max(0, subtotal - discountAmount + shippingFee);
+
+  // GST (18% included in product prices)
+  const taxable = Math.round(totalAmount / 1.18);
+  const taxAmount = totalAmount - taxable;
+
+  return {
+    items: validatedItems,
+    subtotal,
+    discountAmount,
+    discountEligible,
+    discountPercent: discountEligible ? 5 : 0,
+    giftItem,
+    giftEligible,
+    freeShipping,
+    shippingFee,
+    totalAmount,
+    taxableAmount: taxable,
+    taxAmount,
+    currency: 'INR'
+  };
+}
+
+/**
  * Main API Request Dispatcher
  */
 export async function handleApiRequest(req, res) {
@@ -486,7 +577,7 @@ export async function handleApiRequest(req, res) {
       if (!salon) return sendJson(res, 401, { success: false, error: 'Unauthorized' });
 
       const body = await parseJsonBody(req);
-      const { fullName, businessName, phone, city, businessAddress, state, gstin, billingAddress } = body;
+      const { fullName, businessName, phone, city, businessAddress, state, gstin, billingAddress, pincode } = body;
 
       const now = new Date().toISOString();
       db.prepare(`
@@ -497,6 +588,7 @@ export async function handleApiRequest(req, res) {
             city = COALESCE(?, city),
             business_address = COALESCE(?, business_address),
             state = COALESCE(?, state),
+            pincode = COALESCE(?, pincode),
             gstin = COALESCE(?, gstin),
             billing_address = COALESCE(?, billing_address),
             updated_at = ?
@@ -508,6 +600,7 @@ export async function handleApiRequest(req, res) {
         city ? city.trim() : null,
         businessAddress ? businessAddress.trim() : null,
         state ? state.trim() : null,
+        pincode ? pincode.trim() : null,
         gstin ? gstin.trim().toUpperCase() : null,
         billingAddress ? billingAddress.trim() : null,
         now,
@@ -515,7 +608,7 @@ export async function handleApiRequest(req, res) {
       );
 
       const updated = db.prepare(`
-        SELECT id, full_name, business_name, email, phone, city, business_address, state, gstin, billing_address, is_verified, created_at, updated_at
+        SELECT id, full_name, business_name, email, phone, city, business_address, state, pincode, gstin, billing_address, is_verified, created_at, updated_at
         FROM salons WHERE id = ?
       `).get(salon.id);
 
@@ -523,7 +616,7 @@ export async function handleApiRequest(req, res) {
     }
 
     // ------------------------------------------------------------------------
-    // 3. PRODUCTS CATALOGUE ROUTE
+    // 3. PRODUCTS & CART ROUTES
     // ------------------------------------------------------------------------
 
     // GET /api/products
@@ -532,47 +625,40 @@ export async function handleApiRequest(req, res) {
       return sendJson(res, 200, { success: true, products });
     }
 
+    // POST /api/cart/validate (Server calculation of cart items, promotional offers, free gifts, shipping)
+    if (pathname === '/api/cart/validate' && method === 'POST') {
+      try {
+        const body = await parseJsonBody(req);
+        const pricing = calculateOrderPricing(body.items || []);
+        return sendJson(res, 200, { success: true, ...pricing });
+      } catch (err) {
+        return sendJson(res, 400, { success: false, error: err.message || 'Error calculating cart pricing' });
+      }
+    }
+
     // ------------------------------------------------------------------------
-    // 4. ORDER & QUOTATION ROUTES
+    // 4. ORDER & DIRECT E-COMMERCE CHECKOUT ROUTES
     // ------------------------------------------------------------------------
 
     // POST /api/orders
     if (pathname === '/api/orders' && method === 'POST') {
       const salon = getAuthenticatedSalon(req);
-      if (!salon) return sendJson(res, 401, { success: false, error: 'Please log in to submit a salon order request.' });
+      if (!salon) {
+        return sendJson(res, 401, { success: false, error: 'Please log in or create an account to complete your order.' });
+      }
 
       const body = await parseJsonBody(req);
-      const { items, notes } = body;
+      const { items, notes, shippingDetails } = body;
 
       if (!Array.isArray(items) || items.length === 0) {
         return sendJson(res, 400, { success: false, error: 'Order must contain at least one product.' });
       }
 
-      // Validate products and compute server-side reference total (never trust browser total)
-      let referenceTotal = 0;
-      const validatedItems = [];
-
-      for (const item of items) {
-        const qty = parseInt(item.quantity, 10);
-        if (isNaN(qty) || qty <= 0) {
-          return sendJson(res, 400, { success: false, error: 'Quantity must be a positive integer.' });
-        }
-
-        const product = db.prepare('SELECT * FROM products WHERE id = ?').get(item.productId);
-        if (!product) {
-          return sendJson(res, 400, { success: false, error: `Product ID not recognized: ${item.productId}` });
-        }
-
-        const subtotal = product.reference_offer_price * qty;
-        referenceTotal += subtotal;
-
-        validatedItems.push({
-          productId: product.id,
-          productName: product.name,
-          quantity: qty,
-          unitReferencePrice: product.reference_offer_price,
-          subtotal
-        });
+      let pricing;
+      try {
+        pricing = calculateOrderPricing(items);
+      } catch (err) {
+        return sendJson(res, 400, { success: false, error: err.message });
       }
 
       const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -580,23 +666,60 @@ export async function handleApiRequest(req, res) {
       const orderId = `ORD-MOD7-${dateStr}-${randomSuffix}`;
       const now = new Date().toISOString();
 
+      const shipping = shippingDetails || {};
+      const shippingName = (shipping.fullName || salon.full_name || '').trim();
+      const shippingPhone = (shipping.phone || salon.phone || '').trim();
+      const shippingBizName = (shipping.businessName || salon.business_name || '').trim();
+      const shippingAddress = (shipping.address || salon.business_address || '').trim();
+      const shippingCity = (shipping.city || salon.city || '').trim();
+      const shippingState = (shipping.state || salon.state || '').trim();
+      const shippingPincode = (shipping.pincode || salon.pincode || '').trim();
+
+      // Direct e-commerce order: immediately PAYMENT_PENDING with server-calculated payable amount
+      const orderStatus = 'PAYMENT_PENDING';
+      const payableAmount = pricing.totalAmount;
+      const deliveryStatus = 'PAYMENT_PENDING';
+
       // Insert Order and Items transactionally
       db.exec('BEGIN TRANSACTION;');
       try {
         db.prepare(`
-          INSERT INTO orders (id, salon_id, status, reference_total_amount, notes, created_at, updated_at)
-          VALUES (?, ?, 'PENDING_REVIEW', ?, ?, ?, ?)
-        `).run(orderId, salon.id, referenceTotal, notes ? notes.trim() : '', now, now);
+          INSERT INTO orders (
+            id, salon_id, status, reference_total_amount, approved_payable_amount,
+            subtotal_amount, discount_amount, shipping_fee, gift_item, order_type,
+            shipping_name, shipping_phone, shipping_business_name, shipping_address,
+            shipping_city, shipping_state, shipping_pincode,
+            notes, delivery_status, created_at, updated_at
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'DIRECT_ECOMMERCE', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).run(
+          orderId, salon.id, orderStatus, pricing.subtotal, payableAmount,
+          pricing.subtotal, pricing.discountAmount, pricing.shippingFee, pricing.giftItem,
+          shippingName, shippingPhone, shippingBizName, shippingAddress,
+          shippingCity, shippingState, shippingPincode,
+          notes ? notes.trim() : '', deliveryStatus, now, now
+        );
 
         const insertItem = db.prepare(`
           INSERT INTO order_items (id, order_id, product_id, product_name, quantity, unit_reference_price, subtotal)
           VALUES (?, ?, ?, ?, ?, ?, ?)
         `);
 
-        for (const item of validatedItems) {
+        for (const item of pricing.items) {
           const itemId = 'item_' + crypto.randomUUID();
-          insertItem.run(itemId, orderId, item.productId, item.productName, item.quantity, item.unitReferencePrice, item.subtotal);
+          insertItem.run(itemId, orderId, item.productId, item.productName, item.quantity, item.unitPrice, item.subtotal);
         }
+
+        // Keep customer profile updated with their delivery address details
+        db.prepare(`
+          UPDATE salons
+          SET phone = COALESCE(NULLIF(phone, ''), ?),
+              city = COALESCE(NULLIF(city, ''), ?),
+              state = COALESCE(NULLIF(state, ''), ?),
+              business_address = COALESCE(NULLIF(business_address, ''), ?),
+              pincode = COALESCE(NULLIF(pincode, ''), ?),
+              updated_at = ?
+          WHERE id = ?
+        `).run(shippingPhone, shippingCity, shippingState, shippingAddress, shippingPincode, now, salon.id);
 
         db.exec('COMMIT;');
       } catch (err) {
@@ -605,12 +728,13 @@ export async function handleApiRequest(req, res) {
       }
 
       const createdOrder = db.prepare('SELECT * FROM orders WHERE id = ?').get(orderId);
-      createdOrder.items = db.prepare('SELECT * FROM order_items WHERE order_id = ?').all();
+      createdOrder.items = db.prepare('SELECT * FROM order_items WHERE order_id = ?').all(orderId);
 
       return sendJson(res, 201, {
         success: true,
-        message: 'Order request submitted for commercial team review.',
-        order: createdOrder
+        message: 'Order created successfully and ready for payment.',
+        order: createdOrder,
+        pricing
       });
     }
 
@@ -715,7 +839,7 @@ export async function handleApiRequest(req, res) {
       }
 
       if (order.status !== 'QUOTATION_APPROVED' && order.status !== 'PAYMENT_PENDING') {
-        return sendJson(res, 400, { success: false, error: `Cannot pay for order with status '${order.status}'. Must be QUOTATION_APPROVED.` });
+        return sendJson(res, 400, { success: false, error: `Order is not eligible for payment. Current status: ${order.status}.` });
       }
 
       // Amount verified server-side in paise (1 INR = 100 paise)

@@ -15,7 +15,9 @@
   --portal-cobalt-hover: #003380;
   --portal-lime: #E8FF65;
   --portal-lime-hover: #D7F34D;
-  --portal-radius: 4px;
+  --portal-radius: 16px;
+  --portal-radius-sm: 8px;
+  --portal-radius-pill: 9999px;
 }
 
 body.portal-body {
@@ -129,8 +131,8 @@ body.portal-body {
 .auth-card {
   background-color: var(--portal-card-bg);
   border: 1px solid var(--portal-border);
-  border-radius: 4px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+  border-radius: var(--portal-radius);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.05);
   width: 100%;
   max-width: 520px;
   padding: clamp(2rem, 4vw, 3rem);
@@ -205,13 +207,13 @@ body.portal-body {
 .auth-textarea,
 .auth-select {
   width: 100%;
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1.1rem;
   font-family: var(--font-sans);
   font-size: 0.9rem;
   color: var(--portal-charcoal);
   background-color: var(--portal-surface);
   border: 1px solid var(--portal-border);
-  border-radius: 3px;
+  border-radius: var(--portal-radius-sm);
   outline: none;
   transition: all 0.2s ease;
   box-sizing: border-box;
@@ -253,7 +255,7 @@ body.portal-body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   border: none;
-  border-radius: 3px;
+  border-radius: var(--portal-radius-pill);
   cursor: pointer;
   transition: all 0.2s ease;
   margin-top: 0.5rem;
@@ -269,6 +271,7 @@ body.portal-body {
   background-color: var(--portal-lime);
   color: var(--portal-charcoal);
   border: 1px solid rgba(21, 21, 21, 0.15);
+  border-radius: var(--portal-radius-pill);
 }
 
 .auth-btn-lime:hover {

@@ -54,9 +54,12 @@
           Director: <strong id="dashContactName">—</strong> · Location: <strong id="dashSalonCity">—</strong> · Direct Commercial Supply
         </div>
       </div>
-      <div class="dashboard-actions">
+      <div class="dashboard-actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="/" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 0.5rem 1rem;">
+          BROWSE STORE
+        </a>
         <button class="btn btn-primary btn-sm auth-btn-lime" onclick="document.querySelector('[data-view=\'catalogue\']')?.click()">
-          REQUEST SALON ORDER
+          DIRECT SALON ORDER
         </button>
       </div>
     </div>
@@ -64,36 +67,36 @@
     <!-- Quick Stats Grid -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-label">Total Order Requests</div>
+        <div class="stat-label">Total Orders Placed</div>
         <div class="stat-value" id="statTotalOrders">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Under Commercial Review</div>
+        <div class="stat-label">Pending Online Payment</div>
         <div class="stat-value" id="statPendingOrders">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Quotations Approved</div>
+        <div class="stat-label">Paid &amp; Processing</div>
         <div class="stat-value" id="statApprovedOrders">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Completed &amp; Invoiced</div>
+        <div class="stat-label">Dispatched &amp; Invoiced</div>
         <div class="stat-value" id="statPaidOrders">0</div>
       </div>
     </div>
 
     <!-- Navigation Tabs -->
     <nav class="dashboard-tabs" aria-label="Portal Navigation Tabs">
-      <button class="dashboard-tab is-active" data-view="orders">Orders &amp; Quotations</button>
-      <button class="dashboard-tab" data-view="catalogue">Request Salon Supply (Catalogue)</button>
-      <button class="dashboard-tab" data-view="profile">Customer Profile</button>
+      <button class="dashboard-tab is-active" data-view="orders">Order History &amp; Tracking</button>
+      <button class="dashboard-tab" data-view="catalogue">Quick Order Catalogue</button>
+      <button class="dashboard-tab" data-view="profile">Profile &amp; Delivery Address</button>
       <button class="dashboard-tab" data-view="security">Security &amp; Password</button>
     </nav>
 
     <!-- TAB 1: ORDERS & QUOTATIONS -->
     <section class="dashboard-view is-active" id="view-orders" aria-label="Orders and Quotations">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500;">Salon Order Enquiries &amp; Quotations</h2>
-        <span style="font-size: 0.8rem; color: var(--portal-charcoal-muted);">Real-time status synchronized with commercial desk</span>
+        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500;">Salon Order History &amp; Tracking</h2>
+        <span style="font-size: 0.8rem; color: var(--portal-charcoal-muted);">Real-time status synchronized with logistics &amp; billing</span>
       </div>
       <div id="ordersListContainer">
         <!-- Rendered by account.js -->
@@ -104,9 +107,9 @@
     <!-- TAB 2: REQUEST SALON SUPPLY (CATALOGUE) -->
     <section class="dashboard-view" id="view-catalogue" aria-label="Product Catalogue and Order Request">
       <div style="margin-bottom: 1.5rem;">
-        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500; margin-bottom: 0.35rem;">Professional Salon Order Request</h2>
+        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500; margin-bottom: 0.35rem;">Quick Reorder &amp; Direct Salon Supply</h2>
         <p style="font-size: 0.875rem; color: var(--portal-charcoal-muted); line-height: 1.5;">
-          Select required backbar and salon retail quantities. Prices shown represent official public store reference rates. Formal commercial volumes and approved payable amounts are finalized upon submission.
+          Select quantities for instant direct salon supply. Automatic volume discounts (5% on ₹1,499+), complimentary travel pouches (orders ₹999+), and free shipping across India (₹499+) will be applied automatically.
         </p>
       </div>
 
@@ -137,7 +140,7 @@
           </div>
 
           <button type="submit" class="auth-btn-primary auth-btn-lime" id="submitOrderBtn">
-            SUBMIT ORDER REQUEST FOR COMMERCIAL APPROVAL
+            CREATE ORDER &amp; PROCEED TO PAYMENT
           </button>
         </div>
       </form>
@@ -186,6 +189,10 @@
             <div class="auth-field">
               <label for="profState" class="auth-label">State</label>
               <input type="text" id="profState" class="auth-input" placeholder="e.g. Maharashtra, Karnataka">
+            </div>
+            <div class="auth-field">
+              <label for="profPincode" class="auth-label">PIN Code</label>
+              <input type="text" id="profPincode" class="auth-input" placeholder="e.g. 400050" maxlength="6">
             </div>
           </div>
 

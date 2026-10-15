@@ -1,10 +1,13 @@
 import { Auth } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const params = new URLSearchParams(window.location.search);
+  const redirectUrl = params.get('redirect') || '/account?welcome=1';
+
   if (Auth.isAuthenticated()) {
     const salon = await Auth.fetchMe();
     if (salon) {
-      window.location.href = '/account';
+      window.location.href = redirectUrl;
       return;
     }
   }
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (result.success) {
-          window.location.href = '/account?welcome=1';
+          window.location.href = redirectUrl;
         } else {
           showAlert(result.error || 'Registration failed. Please check information.', 'error');
         }

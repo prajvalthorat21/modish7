@@ -101,7 +101,18 @@
           </div>
         </div>
 
-        <a href="#enquiry" class="btn btn-primary btn-sm auth-btn-lime" id="headerCtaBtn">SALON ENQUIRY</a>
+        <!-- Live Shopping Bag Button -->
+        <button type="button" class="header-cart-btn" id="headerCartBtn" aria-label="Open Shopping Bag">
+          <svg class="header-cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="header-cart-text">BAG</span>
+          <span class="cart-count-badge is-hidden" id="headerCartBadge">0</span>
+        </button>
+
+        <a href="#products" class="btn btn-primary btn-sm auth-btn-lime" id="headerCtaBtn">SHOP COLLECTION</a>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open Navigation Menu" aria-expanded="false" aria-controls="mobileNavDrawer">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -130,14 +141,19 @@
           <li><a href="#products" class="mobile-nav-link">The Collection</a></li>
           <li><a href="#brand-story" class="mobile-nav-link">Our Approach</a></li>
           <li><a href="#partnerships" class="mobile-nav-link">Salon Partnerships</a></li>
-          <li><a href="#enquiry" class="mobile-nav-link">Salon Enquiry</a></li>
+          <li><a href="#enquiry" class="mobile-nav-link">Contact</a></li>
+          <li>
+            <a href="/checkout" class="mobile-nav-link" id="mobileCartLink" style="display:inline-flex; align-items:center; gap:8px;">
+              Shopping Bag <span class="cart-count-badge" id="mobileCartBadge">0</span>
+            </a>
+          </li>
           <li id="mobileAuthItem"><a href="/login" class="mobile-nav-link" id="mobileAuthLink" style="color:var(--modish-cobalt); font-weight:600;">Login</a></li>
           <li id="mobileLogoutItem" style="display: none;"><button class="mobile-nav-link" id="mobileLogoutBtn" style="color:#ef4444; background:none; border:none; font-size:1.35rem; cursor:pointer; padding:0; text-align:left; font-family:var(--font-serif);">Sign Out</button></li>
         </ul>
       </nav>
     </div>
     <div>
-      <a href="#enquiry" class="btn btn-primary btn-block mobile-drawer-cta">START SALON ENQUIRY</a>
+      <a href="#products" class="btn btn-primary btn-block mobile-drawer-cta auth-btn-lime">SHOP THE COLLECTION</a>
       <p style="font-size: 0.75rem; color: var(--text-charcoal-muted); margin-top: 1rem; text-align: center;">
         Direct Inquiries: <a href="mailto:support@modish7.com" style="color: var(--modish-cobalt); font-weight: 600;">support@modish7.com</a>
       </p>
@@ -222,92 +238,106 @@
   </section>
 
   <!-- ======================================================================
-       MODISH7 · CURRENT STORE OFFERS (REFERENCE ONLY)
+       MODISH7 · STORE PROMOTIONS (EDITORIAL PRESENTATION)
        ====================================================================== -->
   <section class="offers-section" id="offers" aria-label="Current Store Promotional Offers">
     <div class="container">
       
       <!-- Section Header -->
       <div class="offers-header">
-        <span class="offers-eyebrow">MODISH7 &middot; CURRENT STORE OFFERS</span>
+        <span class="section-label offers-eyebrow">STORE REWARDS &middot; AUTOMATED SAVINGS</span>
         <h2 class="offers-title">&ldquo;A little extra goes a long way.&rdquo;</h2>
-        <p class="offers-subtitle">Explore the current public-store offers.</p>
+        <p class="offers-subtitle">Automatically calculated and applied at checkout on qualifying salon orders across India.</p>
       </div>
 
-      <!-- 3 Prominent Balanced Offer Tiles -->
-      <div class="offers-grid">
+      <!-- Asymmetrical Editorial Offers Layout -->
+      <div class="offers-editorial-layout">
         
-        <!-- Tile 1: Complimentary Gift -->
-        <article class="offer-tile">
-          <div class="offer-tile-top">
-            <div class="offer-icon-badge" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 12 20 22 4 22 4 12"></polyline>
-                <rect x="2" y="7" width="20" height="5"></rect>
-                <line x1="12" y1="22" x2="12" y2="7"></line>
-                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
-                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
-              </svg>
+        <!-- Primary Featured Gift Offer (Prominent Left Anchor) -->
+        <article class="offer-card-hero">
+          <div class="offer-hero-accent-curve" aria-hidden="true"></div>
+          <div class="offer-card-inner">
+            <div class="offer-card-header">
+              <div class="offer-pill-badge offer-pill-gift">
+                <span class="offer-pill-dot"></span>
+                COMPLIMENTARY GIFT
+              </div>
+              <span class="offer-tier-code">TIER &middot; &#8377;999+</span>
             </div>
-            <span class="offer-badge-tag">GIFT</span>
-          </div>
-          <div class="offer-highlight-wrap">
-            <span class="offer-highlight-val">&#8377;500</span>
-          </div>
-          <div class="offer-tile-details">
-            <h3 class="offer-tile-label">Complimentary travel pouch</h3>
-            <p class="offer-tile-condition">On orders above &#8377;999</p>
+
+            <div class="offer-hero-value-wrap">
+              <span class="offer-hero-currency">&#8377;</span>
+              <span class="offer-hero-val">500</span>
+              <span class="offer-hero-val-sub">GIFT VALUE</span>
+            </div>
+
+            <div class="offer-hero-text-block">
+              <h3 class="offer-hero-title">Complimentary Modish7 Travel Pouch</h3>
+              <p class="offer-hero-desc">
+                Receive our bespoke water-resistant salon travel pouch complimentary with every order exceeding &#8377;999.
+              </p>
+            </div>
+
+            <div class="offer-card-footer">
+              <div class="offer-check-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="offer-check-icon">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Automated gift addition in shopping bag</span>
+              </div>
+            </div>
           </div>
         </article>
 
-        <!-- Tile 2: Promotional Savings -->
-        <article class="offer-tile">
-          <div class="offer-tile-top">
-            <div class="offer-icon-badge" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="19" y1="5" x2="5" y2="19"></line>
-                <circle cx="6.5" cy="6.5" r="2.5"></circle>
-                <circle cx="17.5" cy="17.5" r="2.5"></circle>
-              </svg>
+        <!-- Companion Secondary Offers (Stacked Editorial Column) -->
+        <div class="offers-companion-stack">
+          
+          <!-- Secondary Offer 1: 5% OFF -->
+          <article class="offer-card-compact">
+            <div class="offer-card-compact-left">
+              <div class="offer-compact-icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="19" y1="5" x2="5" y2="19"></line>
+                  <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                  <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                </svg>
+              </div>
+              <div class="offer-compact-badge">5% SAVINGS</div>
             </div>
-            <span class="offer-badge-tag">SAVINGS</span>
-          </div>
-          <div class="offer-highlight-wrap">
-            <span class="offer-highlight-val">5% OFF</span>
-          </div>
-          <div class="offer-tile-details">
-            <h3 class="offer-tile-label">Promotional offer</h3>
-            <p class="offer-tile-condition">On orders above &#8377;1,499</p>
-          </div>
-        </article>
+            <div class="offer-card-compact-right">
+              <div class="offer-compact-val">5% OFF</div>
+              <h3 class="offer-compact-title">Volume Promotional Savings</h3>
+              <p class="offer-compact-desc">Applies instantly across entire bag on orders above &#8377;1,499</p>
+            </div>
+          </article>
 
-        <!-- Tile 3: Shipping -->
-        <article class="offer-tile">
-          <div class="offer-tile-top">
-            <div class="offer-icon-badge" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="1" y="3" width="15" height="13"></rect>
-                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                <circle cx="18.5" cy="18.5" r="2.5"></circle>
-              </svg>
+          <!-- Secondary Offer 2: Free Shipping -->
+          <article class="offer-card-compact">
+            <div class="offer-card-compact-left">
+              <div class="offer-compact-icon-wrap" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="3" width="15" height="13"></rect>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                  <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+              </div>
+              <div class="offer-compact-badge">LOGISTICS</div>
             </div>
-            <span class="offer-badge-tag">SHIPPING</span>
-          </div>
-          <div class="offer-highlight-wrap">
-            <span class="offer-highlight-val">FREE</span>
-          </div>
-          <div class="offer-tile-details">
-            <h3 class="offer-tile-label">Shipping across India</h3>
-            <p class="offer-tile-condition">On orders above &#8377;499</p>
-          </div>
-        </article>
+            <div class="offer-card-compact-right">
+              <div class="offer-compact-val">FREE</div>
+              <h3 class="offer-compact-title">Expedited Shipping Across India</h3>
+              <p class="offer-compact-desc">Doorstep salon transit included on all orders above &#8377;499</p>
+            </div>
+          </article>
+
+        </div>
 
       </div>
 
-      <!-- Understated Salon Reference Note -->
+      <!-- Single Short Disclaimer Note -->
       <p class="offers-reference-note">
-        Public-store offers shown for reference only. Salon order pricing and applicable terms are confirmed during enquiry.
+        All qualifying promotions calculate and apply automatically in real time in your shopping bag and during checkout.
       </p>
 
     </div>
@@ -318,50 +348,69 @@
        ====================================================================== -->
   <section class="brand-story-section" id="brand-story" aria-label="Brand Philosophy">
     <div class="container">
-      <div class="brand-story-grid">
+      <div class="brand-story-editorial-grid">
         
-        <!-- Narrative Column -->
-        <div class="story-content">
+        <!-- Left Editorial Narrative Column -->
+        <div class="story-content-col">
           <span class="section-label">THE PHILOSOPHY</span>
           <h2 class="section-headline">
             Haircare With a Professional Perspective.
           </h2>
-          <p class="story-lead">
-            “Discover the Modish7 collection through a salon-focused experience built around thoughtful product selection, distinct haircare needs, and professional business relationships.”
-          </p>
-          <p class="story-body">
-            Modern salons need haircare that delivers undeniable immediate results at the wash station while giving clients tangible transformation to maintain at home. Modish7 bridges luxury botanical purity with professional-grade restorative performance — free of sulphates, parabens, and harsh chemical fillers.
-          </p>
-          <a href="#partnerships" class="btn btn-secondary">OUR SALON PARTNERSHIP APPROACH</a>
+          <blockquote class="story-editorial-quote">
+            &ldquo;Formulated for the sensory demands of the wash station, engineered for lasting results at home.&rdquo;
+          </blockquote>
+          
+          <div class="story-text-group">
+            <p class="story-paragraph">
+              Modern salons require formulations that deliver unmistakable immediate slip and radiance at the backbar while empowering clients to sustain salon-grade health between visits.
+            </p>
+            <p class="story-paragraph">
+              Modish7 combines certified botanical emollients with structural keratin proteins to neutralize mineral stiffness from hard water and combat tropical humidity — completely free of sulphates, parabens, and harsh fillers.
+            </p>
+          </div>
+
+          <div class="story-action-wrap">
+            <a href="#partnerships" class="btn btn-secondary story-approach-btn">
+              <span>OUR SALON PARTNERSHIP APPROACH</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
         </div>
 
-        <!-- Editorial Pillars -->
-        <div class="story-pillars">
-          
-          <div class="pillar-card">
-            <div class="pillar-num">01 / FORMULATION</div>
-            <h3 class="pillar-title">Engineered for Indian Hair &amp; Hard Water</h3>
-            <p class="pillar-desc">
-              Mineral buildup from hard water and tropical humidity place unique stresses on hair cuticles. Our formulations actively dissolve mineral residue while infusing bio-compatible moisture.
-            </p>
+        <!-- Right Distinctive Visual Composition -->
+        <div class="story-visual-composition" aria-label="Modish7 Formulation Pillars">
+          <!-- Sculpted Organic Canvas -->
+          <div class="story-visual-canvas">
+            <div class="story-visual-backdrop" aria-hidden="true"></div>
+            <img 
+              src="/assets/modish7/shea-butter-conditioner.webp" 
+              alt="Modish7 Shea Butter Formulation with pure argan and botanical oils" 
+              class="story-visual-img"
+              loading="lazy"
+            >
           </div>
 
-          <div class="pillar-card">
-            <div class="pillar-num">02 / INTEGRITY</div>
-            <h3 class="pillar-title">Clean Beauty &amp; 100% Vegan Purity</h3>
-            <p class="pillar-desc">
-              Every formula is strictly cruelty-free, sulphate-free, and paraben-free. Powered by certified African Shea Butter, pure Moroccan Argan Oil, and structural keratin proteins.
-            </p>
+          <!-- Staggered Floating Editorial Detail Nodes -->
+          <div class="story-pillar-node node-pos-1">
+            <span class="pillar-label-num">01 / FORMULATION</span>
+            <h3 class="pillar-node-title">Engineered for Indian Hair &amp; Hard Water</h3>
+            <p class="pillar-node-desc">Dissolves mineral deposits and seals cuticles against tropical humidity.</p>
           </div>
 
-          <div class="pillar-card">
-            <div class="pillar-num">03 / BUSINESS</div>
-            <h3 class="pillar-title">Direct Salon Exclusivity &amp; Partnership</h3>
-            <p class="pillar-desc">
-              We collaborate directly with salon owners and creative directors to supply backbar stations, train stylists on application rituals, and ensure dependable stock replenishment.
-            </p>
+          <div class="story-pillar-node node-pos-2">
+            <span class="pillar-label-num">02 / INTEGRITY</span>
+            <h3 class="pillar-node-title">Clean Beauty &amp; 100% Vegan Purity</h3>
+            <p class="pillar-node-desc">Certified African Shea Butter, Moroccan Argan, and structural keratin.</p>
           </div>
 
+          <div class="story-pillar-node node-pos-3">
+            <span class="pillar-label-num">03 / EXCLUSIVITY</span>
+            <h3 class="pillar-node-title">Direct Salon Exclusivity &amp; Supply</h3>
+            <p class="pillar-node-desc">Direct commercial ordering with dependable batch replenishment.</p>
+          </div>
         </div>
 
       </div>
@@ -379,56 +428,76 @@
         <span class="section-label">THE MODISH COLLECTION</span>
         <h2 class="section-headline">Designed for the Salon Ritual.</h2>
         <p class="section-subtext">
-          Explore four distinctive haircare essentials and enquire about ordering them for your salon.
+          Explore our professional backbar and salon retail formulations. Select any quantity and purchase directly with automatic volume savings.
         </p>
       </div>
 
-      <!-- Asymmetrical Editorial Product Showcase -->
-      <div class="products-grid">
+      <!-- Rhythmic Editorial Product Showcase -->
+      <div class="products-editorial-flow">
         
-        <!-- PRODUCT 01 — SIGNATURE COMBO (Extended Featured Spread) -->
-        <article class="product-card product-card-featured" data-product-id="shea-butter-combo">
+        <!-- ============================================================
+             PRODUCT 01 — SIGNATURE COMBO (Full-Width Editorial Hero)
+             ============================================================ -->
+        <article class="product-card product-card-hero-combo" data-product-id="shea-butter-combo">
           
-          <div class="product-media-wrap">
-            <div class="product-badge-wrap">
-              <span class="product-category-tag product-signature-tag">SIGNATURE COMBO</span>
-              <span class="product-category-tag">DUAL-BOTTLE PAIRING</span>
+          <!-- Spacious Curated Media Stage -->
+          <div class="combo-media-stage">
+            <div class="combo-pedestal-backdrop" aria-hidden="true"></div>
+            <div class="combo-badges-cluster">
+              <span class="product-tag-cobalt">SIGNATURE COMBO</span>
+              <span class="product-tag-champagne">DUAL-BOTTLE PAIRING</span>
             </div>
             <img 
               src="/assets/modish7/shea-butter-shampoo-conditioner.webp" 
               alt="Modish7 Shea Butter Shampoo &amp; Conditioner Combo (350ml + 350ml) cobalt blue packaging" 
-              class="product-img"
+              class="combo-hero-img"
               loading="lazy"
             >
           </div>
 
-          <div class="product-details-wrap">
-            <h3 class="product-title">
+          <!-- Editorial Details & Direct Purchase Panel -->
+          <div class="combo-details-panel">
+            <div class="product-stock-status">
+              <span class="stock-dot"></span> In Stock &middot; Immediate Salon Dispatch
+            </div>
+
+            <h3 class="product-title-editorial">
               Modish7 Shea Butter Shampoo &amp; Conditioner Combo (350ml + 350ml)
             </h3>
             
-            <p class="product-description">
-              A complete wash-and-condition ritual for hair that feels dry, rough, or over-processed. This signature Modish7 pairing combines a deeply hydrating shea butter shampoo with a rich repairing conditioner, both enriched with argan oil and keratin to rebuild strand strength and restore softness at the salon backbar.
+            <p class="product-description-text">
+              A complete wash-and-condition ritual for hair that feels dry, rough, or over-processed. This signature pairing combines a deeply hydrating shea butter shampoo with a rich repairing conditioner, both enriched with argan oil and keratin to rebuild strand strength and restore softness at the salon backbar.
             </p>
 
-            <div class="product-specs-list">
+            <div class="product-specs-chips-row">
               <span class="product-spec-chip">350ml + 350ml Pairing</span>
               <span class="product-spec-chip">Keratin &amp; Argan Infused</span>
               <span class="product-spec-chip">Sulphate &amp; Paraben-Free</span>
               <span class="product-spec-chip">Cuticle Sealing pH 4.5</span>
             </div>
 
-            <div class="product-pricing-box">
+            <div class="product-pricing-card">
               <div class="price-offer-wrap">
-                <span class="price-offer">₹3,230</span>
-                <span class="price-mrp">MRP ₹3,400</span>
+                <span class="price-offer">&#8377;3,230</span>
+                <span class="price-mrp">MRP &#8377;3,400</span>
               </div>
-              <span class="price-ref-label">Current Website Offer</span>
+              <span class="price-ref-label">Verified Store Price &middot; GST Inclusive</span>
             </div>
 
-            <div class="product-actions-wrap">
-              <button type="button" class="btn btn-primary btn-enquire-product" id="enquireBtnCombo">
-                ENQUIRE FOR SALON ORDERS
+            <div class="product-direct-purchasing">
+              <div class="product-qty-row">
+                <div class="product-qty-selector">
+                  <button type="button" class="btn-qty-dec" data-target="shea-butter-combo" aria-label="Decrease quantity">&minus;</button>
+                  <input type="number" min="1" max="99" value="1" class="product-qty-input" data-id="shea-butter-combo" aria-label="Quantity for Shea Butter Combo">
+                  <button type="button" class="btn-qty-inc" data-target="shea-butter-combo" aria-label="Increase quantity">&plus;</button>
+                </div>
+                <button type="button" class="btn btn-add-to-cart" data-product-id="shea-butter-combo">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                  ADD TO CART
+                </button>
+              </div>
+              <button type="button" class="btn btn-buy-now auth-btn-lime" data-product-id="shea-butter-combo">
+                BUY NOW &rarr;
               </button>
               <button type="button" class="btn-view-spec" data-spec-id="shea-butter-combo">
                 View Ingredients &amp; Salon Application &rarr;
@@ -438,47 +507,66 @@
 
         </article>
 
-        <!-- PRODUCT 02 — LEAVE-IN CARE -->
-        <article class="product-card product-card-standard" data-product-id="mks-eco-detangler">
+        <!-- ============================================================
+             PRODUCT 02 — LEAVE-IN CARE (Offset Horizontal Composition)
+             ============================================================ -->
+        <article class="product-card product-card-horizontal" data-product-id="mks-eco-detangler">
           
-          <div class="product-media-wrap">
+          <div class="horizontal-media-col">
+            <div class="horizontal-organic-backdrop" aria-hidden="true"></div>
             <div class="product-badge-wrap">
-              <span class="product-category-tag">LEAVE-IN CARE</span>
+              <span class="product-tag-cobalt">LEAVE-IN CARE</span>
+              <span class="product-tag-champagne">STYLING PREP</span>
             </div>
             <img 
               src="/assets/modish7/mks-eco-leave-in-detangler.webp" 
               alt="MKS eco X Leave-In &amp; Detangler Original Scent 118ml spray bottle" 
-              class="product-img"
+              class="horizontal-product-img"
               loading="lazy"
             >
           </div>
 
-          <div class="product-details-wrap">
-            <h3 class="product-title">
+          <div class="horizontal-details-col">
+            <div class="product-stock-status">
+              <span class="stock-dot"></span> In Stock &middot; Immediate Salon Dispatch
+            </div>
+
+            <h3 class="product-title-editorial">
               MKS eco X Leave-In &amp; Detangler, Original Scent (118ml)
             </h3>
 
-            <p class="product-description">
-              A professional spray-on conditioning mist that softens knots on contact, creates effortless comb slip, and leaves hair silky without heavy residue. Essential prep before salon blowout and styling.
+            <p class="product-description-text">
+              A professional spray-on conditioning mist that softens stubborn knots on contact, creates effortless comb slip, and leaves hair silky without heavy residue. Essential prep before salon blowout and heat styling.
             </p>
 
-            <div class="product-specs-list">
+            <div class="product-specs-chips-row">
               <span class="product-spec-chip">118ml Spray Mist</span>
               <span class="product-spec-chip">Argan &amp; Hemp Seed Oil</span>
               <span class="product-spec-chip">Thermal Friction Shield</span>
             </div>
 
-            <div class="product-pricing-box">
+            <div class="product-pricing-card">
               <div class="price-offer-wrap">
-                <span class="price-offer">₹2,089</span>
-                <span class="price-mrp">MRP ₹2,199</span>
+                <span class="price-offer">&#8377;2,089</span>
+                <span class="price-mrp">MRP &#8377;2,199</span>
               </div>
-              <span class="price-ref-label">Current Website Offer</span>
+              <span class="price-ref-label">Verified Store Price &middot; GST Inclusive</span>
             </div>
 
-            <div class="product-actions-wrap">
-              <button type="button" class="btn btn-primary btn-enquire-product" id="enquireBtnDetangler">
-                ENQUIRE FOR SALON ORDERS
+            <div class="product-direct-purchasing">
+              <div class="product-qty-row">
+                <div class="product-qty-selector">
+                  <button type="button" class="btn-qty-dec" data-target="mks-eco-detangler" aria-label="Decrease quantity">&minus;</button>
+                  <input type="number" min="1" max="99" value="1" class="product-qty-input" data-id="mks-eco-detangler" aria-label="Quantity for MKS eco Detangler">
+                  <button type="button" class="btn-qty-inc" data-target="mks-eco-detangler" aria-label="Increase quantity">&plus;</button>
+                </div>
+                <button type="button" class="btn btn-add-to-cart" data-product-id="mks-eco-detangler">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                  ADD TO CART
+                </button>
+              </div>
+              <button type="button" class="btn btn-buy-now auth-btn-lime" data-product-id="mks-eco-detangler">
+                BUY NOW &rarr;
               </button>
               <button type="button" class="btn-view-spec" data-spec-id="mks-eco-detangler">
                 View Ingredients &amp; Salon Application &rarr;
@@ -488,161 +576,228 @@
 
         </article>
 
-        <!-- PRODUCT 03 — CONDITIONING CARE -->
-        <article class="product-card product-card-standard" data-product-id="shea-butter-conditioner">
+        <!-- ============================================================
+             PRODUCTS 03 & 04 — DYNAMIC EDITORIAL DUO
+             ============================================================ -->
+        <div class="products-editorial-duo">
           
-          <div class="product-media-wrap">
-            <div class="product-badge-wrap">
-              <span class="product-category-tag">CONDITIONING CARE</span>
-            </div>
-            <img 
-              src="/assets/modish7/shea-butter-conditioner.webp" 
-              alt="Modish7 Shea Butter Conditioner 350ml cobalt bottle with gold pump" 
-              class="product-img"
-              loading="lazy"
-            >
-          </div>
-
-          <div class="product-details-wrap">
-            <h3 class="product-title">
-              Modish7 Shea Butter Conditioner (350ml)
-            </h3>
-
-            <p class="product-description">
-              Intense moisture infusion designed to seal porous cuticles and restore softness to parched hair. Pure shea butter and botanical emollients rebuild lipid barriers without weighing strands down.
-            </p>
-
-            <div class="product-specs-list">
-              <span class="product-spec-chip">350ml Backbar &amp; Retail</span>
-              <span class="product-spec-chip">High-Porosity Nourishment</span>
-              <span class="product-spec-chip">Instant Cuticle Smoothing</span>
-            </div>
-
-            <div class="product-pricing-box">
-              <div class="price-offer-wrap">
-                <span class="price-offer">₹1,615</span>
-                <span class="price-mrp">MRP ₹1,700</span>
+          <!-- PRODUCT 03 — CONDITIONING CARE -->
+          <article class="product-card product-card-duo duo-conditioner" data-product-id="shea-butter-conditioner">
+            
+            <div class="duo-media-wrap">
+              <div class="duo-media-arch-backdrop" aria-hidden="true"></div>
+              <div class="product-badge-wrap">
+                <span class="product-tag-cobalt">CONDITIONING CARE</span>
               </div>
-              <span class="price-ref-label">Current Website Offer</span>
+              <img 
+                src="/assets/modish7/shea-butter-conditioner.webp" 
+                alt="Modish7 Shea Butter Conditioner 350ml cobalt bottle with gold pump" 
+                class="duo-product-img"
+                loading="lazy"
+              >
             </div>
 
-            <div class="product-actions-wrap">
-              <button type="button" class="btn btn-primary btn-enquire-product" id="enquireBtnConditioner">
-                ENQUIRE FOR SALON ORDERS
-              </button>
-              <button type="button" class="btn-view-spec" data-spec-id="shea-butter-conditioner">
-                View Ingredients &amp; Salon Application &rarr;
-              </button>
-            </div>
-          </div>
-
-        </article>
-
-        <!-- PRODUCT 04 — SCALP CARE -->
-        <article class="product-card product-card-standard" data-product-id="anti-dandruff-shampoo">
-          
-          <div class="product-media-wrap">
-            <div class="product-badge-wrap">
-              <span class="product-category-tag">SCALP CARE</span>
-            </div>
-            <img 
-              src="/assets/modish7/anti-dandruff-shampoo.webp" 
-              alt="Modish7 Anti-Dandruff Shampoo 350ml cobalt bottle with gold pump" 
-              class="product-img"
-              loading="lazy"
-            >
-          </div>
-
-          <div class="product-details-wrap">
-            <h3 class="product-title">
-              Modish7 Anti-Dandruff Shampoo (350ml)
-            </h3>
-
-            <p class="product-description">
-              A targeted botanical scalp clarification formula that gently lifts flaking, soothes scalp itchiness, and balances sebum production without drying out lengths or stripping cosmetic color.
-            </p>
-
-            <div class="product-specs-list">
-              <span class="product-spec-chip">350ml Scalp Cleanser</span>
-              <span class="product-spec-chip">Botanical Scalp Rebalance</span>
-              <span class="product-spec-chip">Colour-Safe &amp; Sulphate-Free</span>
-            </div>
-
-            <div class="product-pricing-box">
-              <div class="price-offer-wrap">
-                <span class="price-offer">₹1,615</span>
-                <span class="price-mrp">MRP ₹1,700</span>
+            <div class="duo-details-wrap">
+              <div class="product-stock-status">
+                <span class="stock-dot"></span> In Stock &middot; Immediate Dispatch
               </div>
-              <span class="price-ref-label">Current Website Offer</span>
+
+              <h3 class="product-title-editorial">
+                Modish7 Shea Butter Conditioner (350ml)
+              </h3>
+
+              <p class="product-description-text">
+                Intense moisture infusion designed to seal porous cuticles and restore softness to parched hair. Pure shea butter and botanical emollients rebuild lipid barriers without weighing strands down.
+              </p>
+
+              <div class="product-specs-chips-row">
+                <span class="product-spec-chip">350ml Salon Bottle</span>
+                <span class="product-spec-chip">High-Porosity Care</span>
+                <span class="product-spec-chip">Instant Cuticle Smoothing</span>
+              </div>
+
+              <div class="product-pricing-card">
+                <div class="price-offer-wrap">
+                  <span class="price-offer">&#8377;1,615</span>
+                  <span class="price-mrp">MRP &#8377;1,700</span>
+                </div>
+                <span class="price-ref-label">Verified Store Price</span>
+              </div>
+
+              <div class="product-direct-purchasing">
+                <div class="product-qty-row">
+                  <div class="product-qty-selector">
+                    <button type="button" class="btn-qty-dec" data-target="shea-butter-conditioner" aria-label="Decrease quantity">&minus;</button>
+                    <input type="number" min="1" max="99" value="1" class="product-qty-input" data-id="shea-butter-conditioner" aria-label="Quantity for Shea Butter Conditioner">
+                    <button type="button" class="btn-qty-inc" data-target="shea-butter-conditioner" aria-label="Increase quantity">&plus;</button>
+                  </div>
+                  <button type="button" class="btn btn-add-to-cart" data-product-id="shea-butter-conditioner">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    ADD TO CART
+                  </button>
+                </div>
+                <button type="button" class="btn btn-buy-now auth-btn-lime" data-product-id="shea-butter-conditioner">
+                  BUY NOW &rarr;
+                </button>
+                <button type="button" class="btn-view-spec" data-spec-id="shea-butter-conditioner">
+                  View Ingredients &amp; Application &rarr;
+                </button>
+              </div>
             </div>
 
-            <div class="product-actions-wrap">
-              <button type="button" class="btn btn-primary btn-enquire-product" id="enquireBtnDandruff">
-                ENQUIRE FOR SALON ORDERS
-              </button>
-              <button type="button" class="btn-view-spec" data-spec-id="anti-dandruff-shampoo">
-                View Ingredients &amp; Salon Application &rarr;
-              </button>
-            </div>
-          </div>
+          </article>
 
-        </article>
+          <!-- PRODUCT 04 — SCALP CARE -->
+          <article class="product-card product-card-duo duo-scalp" data-product-id="anti-dandruff-shampoo">
+            
+            <div class="duo-media-wrap">
+              <div class="duo-media-arch-backdrop scalp-tint" aria-hidden="true"></div>
+              <div class="product-badge-wrap">
+                <span class="product-tag-cobalt">SCALP CARE</span>
+              </div>
+              <img 
+                src="/assets/modish7/anti-dandruff-shampoo.webp" 
+                alt="Modish7 Anti-Dandruff Shampoo 350ml cobalt bottle with gold pump" 
+                class="duo-product-img"
+                loading="lazy"
+              >
+            </div>
+
+            <div class="duo-details-wrap">
+              <div class="product-stock-status">
+                <span class="stock-dot"></span> In Stock &middot; Immediate Dispatch
+              </div>
+
+              <h3 class="product-title-editorial">
+                Modish7 Anti-Dandruff Shampoo (350ml)
+              </h3>
+
+              <p class="product-description-text">
+                A targeted botanical scalp clarification formula that gently lifts flaking, soothes scalp itchiness, and balances sebum production without drying out lengths or stripping cosmetic color.
+              </p>
+
+              <div class="product-specs-chips-row">
+                <span class="product-spec-chip">350ml Scalp Cleanser</span>
+                <span class="product-spec-chip">Botanical Scalp Rebalance</span>
+                <span class="product-spec-chip">Colour-Safe &amp; Sulphate-Free</span>
+              </div>
+
+              <div class="product-pricing-card">
+                <div class="price-offer-wrap">
+                  <span class="price-offer">&#8377;1,615</span>
+                  <span class="price-mrp">MRP &#8377;1,700</span>
+                </div>
+                <span class="price-ref-label">Verified Store Price</span>
+              </div>
+
+              <div class="product-direct-purchasing">
+                <div class="product-qty-row">
+                  <div class="product-qty-selector">
+                    <button type="button" class="btn-qty-dec" data-target="anti-dandruff-shampoo" aria-label="Decrease quantity">&minus;</button>
+                    <input type="number" min="1" max="99" value="1" class="product-qty-input" data-id="anti-dandruff-shampoo" aria-label="Quantity for Anti-Dandruff Shampoo">
+                    <button type="button" class="btn-qty-inc" data-target="anti-dandruff-shampoo" aria-label="Increase quantity">&plus;</button>
+                  </div>
+                  <button type="button" class="btn btn-add-to-cart" data-product-id="anti-dandruff-shampoo">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    ADD TO CART
+                  </button>
+                </div>
+                <button type="button" class="btn btn-buy-now auth-btn-lime" data-product-id="anti-dandruff-shampoo">
+                  BUY NOW &rarr;
+                </button>
+                <button type="button" class="btn-view-spec" data-spec-id="anti-dandruff-shampoo">
+                  View Ingredients &amp; Application &rarr;
+                </button>
+              </div>
+            </div>
+
+          </article>
+
+        </div>
 
       </div>
     </div>
   </section>
 
   <!-- ======================================================================
-       SALON PARTNERSHIP EXPERIENCE (3 SIMPLE STEPS)
+       SALON PARTNERSHIP EXPERIENCE (EDITORIAL TIMELINE)
        ====================================================================== -->
   <section class="partnership-section" id="partnerships" aria-label="Salon Partnership Process">
     <div class="container">
       
-      <div style="text-align: center; max-width: 720px; margin: 0 auto;">
-        <span class="section-label">PARTNERSHIP JOURNEY</span>
-        <h2 class="section-headline">Let's Build Your Salon's Haircare Offering.</h2>
-        <p class="section-subtext" style="margin: 0 auto;">
-          A simple, transparent process connecting salon owners with direct Modish7 business allocations.
+      <div class="partnership-header-wrap">
+        <span class="section-label">THE PURCHASING PROCESS</span>
+        <h2 class="section-headline">Direct Online Supply for Your Salon.</h2>
+        <p class="section-subtext">
+          A streamlined, transparent shopping experience connecting salon businesses with verified commercial supply across India.
         </p>
       </div>
 
-      <div class="steps-grid">
+      <!-- Horizontal Connected Timeline on Desktop -> Vertical on Mobile -->
+      <div class="partnership-timeline" role="list">
         
-        <div class="step-card">
-          <div class="step-number">01</div>
-          <h3 class="step-title">EXPLORE</h3>
-          <p class="step-text">
-            Explore the featured Modish7 products, review backbar specifications, and evaluate which formulations best match your salon clients' hair profiles.
-          </p>
+        <!-- Track Connecting Line -->
+        <div class="timeline-track-line" aria-hidden="true"></div>
+
+        <!-- Step 01 -->
+        <div class="timeline-step-node" role="listitem">
+          <div class="timeline-marker">
+            <span class="timeline-num">01</span>
+          </div>
+          <div class="timeline-content">
+            <span class="timeline-step-tag">STEP ONE</span>
+            <h3 class="timeline-title">EXPLORE &amp; SELECT</h3>
+            <p class="timeline-desc">
+              Browse our four salon formulations, review backbar specifications, and choose your exact batch quantities without minimum order barriers.
+            </p>
+          </div>
         </div>
 
-        <div class="step-card">
-          <div class="step-number">02</div>
-          <h3 class="step-title">ENQUIRE</h3>
-          <p class="step-text">
-            Tell us about your salon, the products you're interested in, and the quantities required using our structured salon partner enquiry form below.
-          </p>
+        <!-- Step 02 -->
+        <div class="timeline-step-node" role="listitem">
+          <div class="timeline-marker">
+            <span class="timeline-num">02</span>
+          </div>
+          <div class="timeline-content">
+            <span class="timeline-step-tag">STEP TWO</span>
+            <h3 class="timeline-title">BAG &amp; AUTOMATIC PERKS</h3>
+            <p class="timeline-desc">
+              Add products to your shopping bag. Automated 5% volume savings, complimentary travel pouches, and free delivery across India calculate immediately.
+            </p>
+          </div>
         </div>
 
-        <div class="step-card">
-          <div class="step-number">03</div>
-          <h3 class="step-title">CONNECT</h3>
-          <p class="step-text">
-            The Modish7 team can follow up through the verified business contact channel to discuss the enquiry, order volumes, and applicable commercial terms.
-          </p>
+        <!-- Step 03 -->
+        <div class="timeline-step-node" role="listitem">
+          <div class="timeline-marker">
+            <span class="timeline-num">03</span>
+          </div>
+          <div class="timeline-content">
+            <span class="timeline-step-tag">STEP THREE</span>
+            <h3 class="timeline-title">PAY &amp; OFFICIAL INVOICE</h3>
+            <p class="timeline-desc">
+              Checkout securely with Razorpay. Instantly receive your confirmation, real-time dispatch tracking, and official GST tax invoice in your account.
+            </p>
+          </div>
         </div>
 
       </div>
 
       <div class="partnership-cta-wrap">
-        <a href="#enquiry" class="btn btn-primary" id="partnershipCtaBtn">START A SALON ENQUIRY</a>
+        <a href="#products" class="btn btn-primary partnership-cta-btn" id="partnershipCtaBtn">
+          <span>EXPLORE &amp; ORDER PRODUCTS</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
 
     </div>
   </section>
 
   <!-- ======================================================================
-       SALON ENQUIRY FORM — PRIMARY CONVERSION
+       SALON CONCIERGE & CUSTOM VOLUME DESK
        ====================================================================== -->
   <section class="enquiry-section" id="enquiry" aria-label="Salon Business Enquiry Form">
     <div class="container-narrow">
@@ -650,10 +805,10 @@
       <div class="enquiry-form-card">
         
         <div class="enquiry-form-header">
-          <span class="section-label" style="justify-content: center;">DIRECT SALON DESK</span>
-          <h2 class="enquiry-form-title">Start Your Salon Business Enquiry</h2>
+          <span class="section-label" style="justify-content: center;">DIRECT SALON CONCIERGE</span>
+          <h2 class="enquiry-form-title">Custom Volume &amp; Franchise Desk</h2>
           <p class="enquiry-form-subtitle">
-            Submit your details below to discuss product allocations, batch quantities, and commercial terms with the Modish7 team.
+            Standard salon orders can be placed directly above through our cart and checkout. For custom high-volume allocations (100+ units), salon chain distribution, or corporate requirements, connect with our salon concierge desk below.
           </p>
         </div>
 
@@ -1000,6 +1155,33 @@
       </div>
     </div>
   </div>
+
+  <!-- ======================================================================
+       SLIDE-OVER SHOPPING BAG DRAWER
+       ====================================================================== -->
+  <div class="cart-drawer-backdrop" id="cartDrawerBackdrop"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping Bag Drawer">
+    <div class="cart-drawer-header">
+      <div class="cart-drawer-title-wrap">
+        <h3 class="cart-drawer-title">Shopping Bag</h3>
+        <span class="cart-drawer-count" id="cartDrawerCount">0 items</span>
+      </div>
+      <button type="button" class="cart-drawer-close" id="cartDrawerClose" aria-label="Close Shopping Bag">&times;</button>
+    </div>
+
+    <!-- Live Rewards Tracker Banner -->
+    <div class="cart-offers-banner" id="cartOffersBanner"></div>
+
+    <!-- Scrollable Items Area -->
+    <div class="cart-drawer-body" id="cartDrawerBody">
+      <!-- Injected by CartManager -->
+    </div>
+
+    <!-- Cart Footer with Totals & Checkout Actions -->
+    <div class="cart-drawer-footer" id="cartDrawerFooter">
+      <!-- Injected by CartManager -->
+    </div>
+  </aside>
 
   <!-- Main JavaScript Bundle -->
   <script type="module" src="/src/scripts/main.js"></script>

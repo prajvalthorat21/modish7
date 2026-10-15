@@ -36,6 +36,7 @@ const server = http.createServer(async (req, res) => {
   else if (pathname === '/login') pathname = '/login.html';
   else if (pathname === '/register') pathname = '/register.html';
   else if (pathname === '/account') pathname = '/account.html';
+  else if (pathname === '/checkout') pathname = '/checkout.html';
 
   let filePath = path.join(DIST_DIR, pathname);
 

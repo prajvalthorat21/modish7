@@ -1,11 +1,14 @@
 import { Auth } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // If already authenticated, redirect to /account immediately
+  const params = new URLSearchParams(window.location.search);
+  const redirectUrl = params.get('redirect') || '/account';
+
+  // If already authenticated, redirect to destination immediately
   if (Auth.isAuthenticated()) {
     const salon = await Auth.fetchMe();
     if (salon) {
-      window.location.href = '/account';
+      window.location.href = redirectUrl;
       return;
     }
   }
@@ -37,7 +40,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Check URL params for feedback (e.g. registered=1, expired=1, logged_out=1, google errors)
-  const params = new URLSearchParams(window.location.search);
   if (params.get('registered') === '1') {
     showAlert('Account created successfully. Please sign in.', 'success');
   } else if (params.get('logged_out') === '1') {
@@ -85,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         const result = await Auth.login(email, password, rememberMe);
         if (result.success) {
-          window.location.href = '/account';
+          window.location.href = redirectUrl;
         } else {
           showAlert(result.error || 'Authentication failed. Please verify credentials.', 'error');
         }
