@@ -135,42 +135,166 @@ function initHeader() {
 }
 
 /* --------------------------------------------------------------------------
-   2. Hero Video Optimization & Reduced Motion
+   2. Hero Video Optimization, Cross-Browser Playback & Reduced Motion
    -------------------------------------------------------------------------- */
 function initHeroVideo() {
   const video = document.getElementById('heroVideo');
-  if (!video) return;
+  const heroSection = document.getElementById('hero');
+  if (!video || !heroSection) return;
 
-  // Respect reduced motion
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) {
-    video.pause();
-    return;
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mobileQuery = window.matchMedia('(max-width: 768px)');
+
+  // Responsive poster selection
+  function updatePoster() {
+    const isMobile = mobileQuery.matches;
+    const targetPoster = isMobile 
+      ? '/assets/modish7/hero-poster-mobile.webp' 
+      : '/assets/modish7/hero-poster.webp';
+    if (video.getAttribute('poster') !== targetPoster) {
+      video.setAttribute('poster', targetPoster);
+    }
   }
+  updatePoster();
 
-  // Ensure playback with fallbacks
+  // Crucial cross-browser mobile & desktop video attributes
   video.muted = true;
+  video.defaultMuted = true;
   video.playsInline = true;
+  video.setAttribute('muted', '');
+  video.setAttribute('playsinline', '');
+  video.setAttribute('webkit-playsinline', '');
   video.loop = true;
 
-  const playPromise = video.play();
-  if (playPromise !== undefined) {
-    playPromise.catch(() => {
-      // Autoplay with sound restricted, muted retry
+  let hasUserInteracted = false;
+  let isPlayRequested = false;
+  let retryListenersAttached = false;
+
+  // Track playback status on container for graceful styling & fallback
+  function setVideoState(state) {
+    heroSection.dataset.videoState = state;
+    if (state === 'playing') {
+      heroSection.classList.add('video-is-playing');
+      heroSection.classList.remove('video-is-fallback', 'video-is-waiting');
+    } else if (state === 'fallback' || state === 'error') {
+      heroSection.classList.add('video-is-fallback');
+      heroSection.classList.remove('video-is-playing', 'video-is-waiting');
+    } else if (state === 'waiting' || state === 'stalled') {
+      heroSection.classList.add('video-is-waiting');
+    }
+  }
+
+  // Attempt playback safely handling returned promise
+  async function attemptPlay() {
+    if (motionQuery.matches) {
+      // Gracefully honour reduced motion without broken hero
+      video.pause();
+      setVideoState('fallback');
+      return;
+    }
+
+    if (isPlayRequested) return;
+    isPlayRequested = true;
+
+    try {
       video.muted = true;
-      video.play().catch(() => {
-        // Fallback or poster display
-      });
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        await playPromise;
+        setVideoState('playing');
+        detachRetryListeners();
+      }
+    } catch (err) {
+      // Autoplay restricted by browser policy (e.g. low-power mode, battery saver)
+      // Keep approved visual poster fallback and listen for safe interaction
+      setVideoState('fallback');
+      attachRetryListeners();
+    } finally {
+      isPlayRequested = false;
+    }
+  }
+
+  // Graceful retry on user interaction without infinite loop
+  function onUserInteraction() {
+    if (hasUserInteracted) return;
+    hasUserInteracted = true;
+    detachRetryListeners();
+    if (!motionQuery.matches && video.paused) {
+      attemptPlay();
+    }
+  }
+
+  function attachRetryListeners() {
+    if (retryListenersAttached || hasUserInteracted) return;
+    retryListenersAttached = true;
+    const events = ['touchstart', 'pointerdown', 'click', 'scroll', 'keydown'];
+    events.forEach(evt => {
+      window.addEventListener(evt, onUserInteraction, { once: true, passive: true });
     });
   }
 
-  // Pause video when out of viewport to preserve GPU & battery
+  function detachRetryListeners() {
+    if (!retryListenersAttached) return;
+    retryListenersAttached = false;
+    const events = ['touchstart', 'pointerdown', 'click', 'scroll', 'keydown'];
+    events.forEach(evt => {
+      window.removeEventListener(evt, onUserInteraction);
+    });
+  }
+
+  // Media event handlers for diagnostic accuracy and resilience
+  video.addEventListener('loadedmetadata', () => {
+    updatePoster();
+  });
+
+  video.addEventListener('canplay', () => {
+    if (!motionQuery.matches && video.paused && !hasUserInteracted) {
+      attemptPlay();
+    }
+  });
+
+  video.addEventListener('playing', () => {
+    setVideoState('playing');
+  });
+
+  video.addEventListener('waiting', () => {
+    setVideoState('waiting');
+  });
+
+  video.addEventListener('stalled', () => {
+    // Retain currently rendered frame or poster, avoid blanking
+    if (video.paused && !motionQuery.matches) {
+      setVideoState('waiting');
+    }
+  });
+
+  video.addEventListener('error', () => {
+    console.warn('[Modish7 Hero Video] Playback error occurred:', video.error);
+    setVideoState('fallback');
+  });
+
+  // Handle visibility changes (preserve battery / avoid running while backgrounded)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      if (!video.paused) {
+        video.pause();
+      }
+    } else if (document.visibilityState === 'visible') {
+      if (!motionQuery.matches && video.paused && isHeroInView) {
+        attemptPlay();
+      }
+    }
+  });
+
+  // IntersectionObserver for view-aware playback
+  let isHeroInView = true;
   if ('IntersectionObserver' in window) {
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          if (!prefersReducedMotion && video.paused) {
-            video.play().catch(() => {});
+        isHeroInView = entry.isIntersecting;
+        if (isHeroInView) {
+          if (!motionQuery.matches && video.paused) {
+            attemptPlay();
           }
         } else {
           if (!video.paused) {
@@ -180,7 +304,35 @@ function initHeroVideo() {
       });
     }, { threshold: 0.15 });
 
-    videoObserver.observe(video);
+    videoObserver.observe(heroSection);
+  }
+
+  // Handle live toggle of reduced motion preference
+  motionQuery.addEventListener('change', (e) => {
+    if (e.matches) {
+      video.pause();
+      setVideoState('fallback');
+    } else {
+      attemptPlay();
+    }
+  });
+
+  // Handle viewport resize across mobile/desktop breakpoint cleanly
+  mobileQuery.addEventListener('change', (e) => {
+    updatePoster();
+    const wasPlaying = !video.paused;
+    video.load();
+    if (wasPlaying && !motionQuery.matches) {
+      attemptPlay();
+    }
+  });
+
+  // Initial trigger
+  if (motionQuery.matches) {
+    video.pause();
+    setVideoState('fallback');
+  } else {
+    attemptPlay();
   }
 }
 

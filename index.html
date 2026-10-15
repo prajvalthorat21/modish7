@@ -156,13 +156,27 @@
         muted 
         loop 
         playsinline 
+        webkit-playsinline
         preload="auto" 
-        poster="/assets/modish7/shea-butter-shampoo-conditioner.webp"
+        poster="/assets/modish7/hero-poster.webp"
         aria-label="Modish7 Professional Haircare Campaign Video"
       >
+        <!-- Mobile-optimised portrait video sources (<= 768px) -->
+        <source media="(max-width: 768px)" src="/assets/modish7/hero-video-mobile.mp4" type="video/mp4">
+        <source media="(max-width: 768px)" src="/assets/modish7/hero-video-mobile.webm" type="video/webm">
+        <!-- Desktop / Wide video sources (> 768px) -->
         <source src="/assets/modish7/hero-video.mp4" type="video/mp4">
+        <source src="/assets/modish7/hero-video.webm" type="video/webm">
         Your browser does not support the video tag.
       </video>
+
+      <!-- Immediate inline check for mobile poster to avoid layout shifts -->
+      <script>
+        if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+          var hv = document.getElementById('heroVideo');
+          if (hv) hv.poster = '/assets/modish7/hero-poster-mobile.webp';
+        }
+      </script>
 
       <!-- ONLY ONE ELEMENT OVER THE VIDEO -->
       <div class="hero-cta-overlay">
